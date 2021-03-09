@@ -1,6 +1,7 @@
 "use strict"
 
 const { Model } = require("sequelize")
+const { hashPassword } = require("../../utils/encrypt")
 
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
@@ -13,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 			// define association here
 		}
 	}
+
 	User.init(
 		{
 			name: DataTypes.STRING,
@@ -24,5 +26,11 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: "User",
 		}
 	)
+
+	// Hash password before creating a new user
+	User.beforeCreate((user, options) => {
+		const hashedPassword = hashPassword(user.password)
+		user.password = hashedPassword
+	})
 	return User
 }
