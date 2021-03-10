@@ -1,0 +1,7 @@
+const ONE_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000
+const ONE_DAY_IN_SECONDS = 24 * 60 * 60
+
+module.exports = {
+	ONE_DAY_IN_MILLISECONDS,
+	ONE_DAY_IN_SECONDS,
+}
