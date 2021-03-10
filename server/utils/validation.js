@@ -22,7 +22,7 @@ const validateName = name => {
 	}
 
 	if (name && name.length < 3) {
-		errors.push("name must not be less than 6 characters")
+		errors.push("name must not be less than 3 characters")
 	}
 
 	return errors
