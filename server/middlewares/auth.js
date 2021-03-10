@@ -28,7 +28,7 @@ const authenticate = async (req, res, next) => {
 			return next(createError(404, { errors: ["User does not exist"] }))
 		}
 
-		res.user = user
+		req.user = user
 
 		return next()
 	} catch (error) {
