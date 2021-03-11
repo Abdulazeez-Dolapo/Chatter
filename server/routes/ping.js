@@ -1,9 +1,12 @@
-const express = require("express");
-const router = express.Router();
+const express = require("express")
 
-router.post("/", function (req, res, next) {
-  const message = req.body.message;
-  res.status(200).send({ response: `Server is running. Message received: ${message}` });
-});
+const router = express.Router()
 
-module.exports = router;
+router.post("/ping", function (req, res, next) {
+	const message = req.body.message
+	res.status(200).send({
+		response: `Server is running. Message received: ${message}`,
+	})
+})
+
+module.exports = router
