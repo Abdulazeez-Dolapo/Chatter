@@ -1,14 +1,8 @@
 const { User } = require("../database/models")
 
-const findUser = async (where, scope) => {
+const findUser = async (where, scope = "defaultScope") => {
 	try {
-		if (scope) {
-			return await User.scope(scope).findOne({
-				where,
-			})
-		}
-
-		return await User.findOne({
+		return await User.scope(scope).findOne({
 			where,
 		})
 	} catch (err) {
