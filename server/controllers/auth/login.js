@@ -38,9 +38,7 @@ const loginUser = async (req, res, next) => {
 			return next(createError(400, { errors }))
 		}
 
-		// remove password from user object before encryption
-		delete user.dataValues.password
-		const token = createToken(user.dataValues)
+		const token = createToken({ id: user.id })
 
 		// set cookie
 		const cookieOptions = {
@@ -54,6 +52,7 @@ const loginUser = async (req, res, next) => {
 			message: "Logged in successfully",
 		})
 	} catch (error) {
+		console.log(error)
 		return next(createError(500, { errors: ["An error occured"] }))
 	}
 }
