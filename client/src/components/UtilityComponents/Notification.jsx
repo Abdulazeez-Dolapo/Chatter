@@ -5,7 +5,7 @@ import CloseIcon from "@material-ui/icons/Close"
 import Snackbar from "@material-ui/core/Snackbar"
 
 const Notification = props => {
-	const { open, handleClose } = props
+	const { open, handleClose, message } = props
 
 	return (
 		<Snackbar
@@ -16,7 +16,7 @@ const Notification = props => {
 			open={open}
 			autoHideDuration={6000}
 			onClose={handleClose}
-			message="Login failed"
+			message={message}
 			action={
 				<Fragment>
 					<IconButton

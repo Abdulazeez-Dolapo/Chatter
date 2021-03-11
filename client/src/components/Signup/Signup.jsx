@@ -2,10 +2,10 @@ import { useEffect, Fragment } from "react"
 import { Link, useHistory } from "react-router-dom"
 
 import Notification from "../UtilityComponents/Notification"
-import LoginForm from "../UtilityComponents/Form"
+import SignupForm from "../UtilityComponents/Form"
 
 import { useNotification } from "../../hooks/notification"
-import { loginUser } from "../../services/login"
+import { signupUser } from "../../services/signup"
 import authPageStyles from "../../styles/authPage"
 
 import Button from "@material-ui/core/Button"
@@ -15,10 +15,10 @@ import { makeStyles } from "@material-ui/core/styles"
 
 const useStyles = makeStyles(authPageStyles)
 
-export default function Login() {
+export default function Register() {
 	const { open, handleClose, message } = useNotification()
-	const history = useHistory()
 	const classes = useStyles()
+	const history = useHistory()
 
 	useEffect(() => {
 		const user = localStorage.getItem("user")
@@ -26,17 +26,18 @@ export default function Login() {
 	})
 
 	const initialValues = {
+		username: "",
 		email: "",
 		password: "",
 	}
 
-	const onSubmit = async (
-		{ email, password },
+	const onSubmit = (
+		{ username, email, password },
 		{ setStatus, setSubmitting }
 	) => {
-		console.log({ email, password })
+		console.log({ username, email, password })
 		setStatus()
-		loginUser(email, password).then(
+		signupUser(username, email, password).then(
 			() => {
 				return
 			},
@@ -51,13 +52,13 @@ export default function Login() {
 		<Fragment>
 			<Box className={classes.buttonHeader}>
 				<Box p={1} alignSelf="flex-end" alignItems="center">
-					<Link to="/signup" className={classes.link}>
+					<Link to="/login" className={classes.link}>
 						<Button className={classes.noAccBtn}>
-							Don't have an account?
+							Already have an account?
 						</Button>
 
 						<Button className={classes.accBtn} variant="contained">
-							Create account
+							Login
 						</Button>
 					</Link>
 				</Box>
@@ -66,13 +67,13 @@ export default function Login() {
 					<Grid container>
 						<Grid item xs>
 							<p className={classes.welcome} component="h1" variant="h5">
-								Welcome back!
+								Create an account
 							</p>
 						</Grid>
 					</Grid>
 
-					<LoginForm
-						type="login"
+					<SignupForm
+						type="signup"
 						onSubmit={onSubmit}
 						classes={classes}
 						initialValues={initialValues}

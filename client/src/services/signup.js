@@ -1,4 +1,4 @@
-export const loginUser = async (email, password) => {
+export const signupUser = async (username, email, password) => {
 	const res = await fetch(
 		`/auth/login?email=${email}&password=${password}`
 	).then(res => res.json())

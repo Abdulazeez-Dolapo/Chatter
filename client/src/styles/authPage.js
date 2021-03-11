@@ -24,10 +24,15 @@ const loginPageStyles = theme => ({
 		boxShadow: "none",
 		marginRight: 35,
 		textTransform: "none",
-		fontSize: 16,
+		fontSize: 14,
+
+		[theme.breakpoints.down("sm")]: {
+			marginRight: 5,
+			width: 140,
+		},
 	},
 	noAccBtn: {
-		fontSize: 16,
+		fontSize: 14,
 		color: "#b0b0b0",
 		fontWeight: 400,
 		textAlign: "center",
