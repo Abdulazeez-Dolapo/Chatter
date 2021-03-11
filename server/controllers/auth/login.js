@@ -3,7 +3,7 @@ const createError = require("http-errors")
 const { validateEmail, validatePassword } = require("../../utils/validation")
 const { comparePassword } = require("../../utils/encrypt")
 const { createToken } = require("../../utils/token")
-const { ONE_DAY_IN_MILLISECONDS } = require("../../utils/constants")
+const { cookieOptions } = require("../../utils/constants")
 
 const UserQueries = require("../../queries/user")
 
@@ -41,11 +41,6 @@ const loginUser = async (req, res, next) => {
 		const token = createToken({ id: user.id })
 
 		// set cookie
-		const cookieOptions = {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === "production",
-			expire: ONE_DAY_IN_MILLISECONDS,
-		}
 		res.cookie("token", token, cookieOptions)
 
 		return res.status(200).json({
