@@ -6,7 +6,9 @@ const {
 	validatePassword,
 } = require("../../utils/validation")
 
-const UserQueries = require("../../queries/user")
+const { createUser, findUser } = require("../../queries/user")
+const { createToken } = require("../../utils/token")
+const { cookieOptions } = require("../../utils/constants")
 
 const validateRequestBody = body => {
 	const { email, name, password } = body
@@ -30,18 +32,23 @@ const registerUser = async (req, res, next) => {
 		const { email } = req.body
 
 		// check if email already exists
-		const user = await UserQueries.findUser({ email })
+		const user = await findUser({ email })
 		if (user) {
 			return next(createError(400, { errors: ["email already in use"] }))
 		}
 
 		// create a new user
-		await UserQueries.createUser(req.body)
+		const newUser = await createUser(req.body)
+		const token = createToken({ id: newUser.id })
+
+		// set cookie
+		res.cookie("token", token, cookieOptions)
 
 		return res.status(201).json({
-			message: "User created successfully",
+			message: "User created and logged in successfully",
 		})
 	} catch (error) {
+		console.log(error)
 		return next(createError(500, { errors: ["An error occured"] }))
 	}
 }
