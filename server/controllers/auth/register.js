@@ -46,6 +46,9 @@ const registerUser = async (req, res, next) => {
 
 		return res.status(201).json({
 			message: "User created and logged in successfully",
+			user: {
+				username: newUser.username,
+			},
 		})
 	} catch (error) {
 		console.log(error)
