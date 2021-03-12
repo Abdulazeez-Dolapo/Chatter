@@ -14,15 +14,15 @@ const validatePassword = password => {
 	return errors
 }
 
-const validateName = name => {
+const validateUsername = username => {
 	const errors = []
 
-	if (!name) {
-		errors.push("Please enter a name")
+	if (!username) {
+		errors.push("Please enter a username")
 	}
 
-	if (name && name.length < 3) {
-		errors.push("name must not be less than 3 characters")
+	if (username && username.length < 3) {
+		errors.push("username must not be less than 3 characters")
 	}
 
 	return errors
@@ -44,6 +44,6 @@ const validateEmail = email => {
 
 module.exports = {
 	validatePassword,
-	validateName,
+	validateUsername,
 	validateEmail,
 }
