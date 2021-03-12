@@ -25,20 +25,23 @@ export default function Auth(props) {
 	const { onFormSubmit, initialValues, type, routeTo } = props
 
 	const onSubmit = async formData => {
-		setLoading(true)
-		const res = await onFormSubmit(formData)
+		try {
+			setLoading(true)
+			const res = await onFormSubmit(formData)
 
-		if (res.errors?.length > 0) {
-			setMessage(res.errors)
-			setOpen(true)
+			localStorage.setItem("user", JSON.stringify(res.user))
 			setLoading(false)
-			return
-		}
+			history.push("/dashboard")
+		} catch (error) {
+			if (error?.response?.data?.error?.errors?.length > 0) {
+				setMessage(error.response.data.error.errors)
+			} else {
+				setMessage("An error occurred. Please try again.")
+			}
 
-		localStorage.setItem("user", JSON.stringify(res.user))
-		setLoading(false)
-		history.push("/dashboard")
-		return
+			setLoading(false)
+			setOpen(true)
+		}
 	}
 
 	return (
