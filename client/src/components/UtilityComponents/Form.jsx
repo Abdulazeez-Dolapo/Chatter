@@ -6,9 +6,10 @@ import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import Box from "@material-ui/core/Box"
+import CircularProgress from "@material-ui/core/CircularProgress"
 
 const Form = props => {
-	const { onSubmit, classes, type, initialValues } = props
+	const { onSubmit, classes, type, initialValues, loading } = props
 
 	return (
 		<Formik
@@ -95,8 +96,15 @@ const Form = props => {
 							variant="contained"
 							color="primary"
 							className={classes.submit}
+							disabled={loading}
 						>
-							{type === "signup" ? "Create" : "Login"}
+							{loading ? (
+								<CircularProgress />
+							) : type === "signup" ? (
+								"Create"
+							) : (
+								"Login"
+							)}
 						</Button>
 					</Box>
 				</form>
