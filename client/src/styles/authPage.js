@@ -11,7 +11,7 @@ const loginPageStyles = theme => ({
 		justifyContent: "space-between",
 		flexDirection: "column",
 		bgcolor: "background.paper",
-		minHeight: "100vh",
+		minHeight: "80vh",
 		paddingTop: 23,
 	},
 	accBtn: {
@@ -31,7 +31,7 @@ const loginPageStyles = theme => ({
 			width: 140,
 		},
 	},
-	noAccBtn: {
+	noAcc: {
 		fontSize: 14,
 		color: "#b0b0b0",
 		fontWeight: 400,
@@ -39,6 +39,7 @@ const loginPageStyles = theme => ({
 		marginRight: 21,
 		whiteSpace: "nowrap",
 		textTransform: "none",
+		display: "inline-block",
 	},
 	box: {
 		padding: 24,
@@ -71,7 +72,7 @@ const loginPageStyles = theme => ({
 		height: "2rem",
 		padding: "5px",
 	},
-	link: { textDecoration: "none", display: "flex", flexWrap: "nowrap" },
+	link: { textDecoration: "none", flexWrap: "nowrap" },
 	forgot: {
 		paddingRight: 10,
 		color: theme.palette.primary.main,
