@@ -48,6 +48,7 @@ const registerUser = async (req, res, next) => {
 			message: "User created and logged in successfully",
 			user: {
 				username: newUser.username,
+				id: user.id,
 			},
 		})
 	} catch (error) {
