@@ -1,5 +1,5 @@
 import Auth from "../UtilityComponents/Auth"
-import { loginUser } from "../../services/login"
+import { loginUser } from "../../services/auth"
 
 export default function Login() {
 	const initialValues = {
