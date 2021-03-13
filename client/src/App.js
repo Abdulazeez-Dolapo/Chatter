@@ -1,5 +1,4 @@
-import { useState } from "react"
-import { BrowserRouter, Route, Redirect } from "react-router-dom"
+import { BrowserRouter, Route } from "react-router-dom"
 
 import { MuiThemeProvider } from "@material-ui/core"
 
@@ -8,19 +7,19 @@ import { theme } from "./themes/theme.js"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import Dashboard from "./pages/Dashboard"
+import ProtectedRoute from "./components/UtilityComponents/ProtectedRoute.jsx"
 
 function App() {
-	const [loggedIn, setLoggedIn] = useState(localStorage.getItem("user"))
-
 	return (
 		<MuiThemeProvider theme={theme}>
 			<BrowserRouter>
-				<Route path="/login" component={Login} />
-				<Route path="/signup" component={Signup} />
-				<Route path="/dashboard" component={Dashboard} />
-				<Route exact path="/">
-					<Redirect to="/signup" />
-				</Route>
+				<Route exact path="/login" component={Login} />
+
+				<Route exact path="/signup" component={Signup} />
+
+				<ProtectedRoute path="/dashboard">
+					<Dashboard />
+				</ProtectedRoute>
 			</BrowserRouter>
 		</MuiThemeProvider>
 	)

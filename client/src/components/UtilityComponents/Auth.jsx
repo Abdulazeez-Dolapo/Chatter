@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useHistory } from "react-router-dom"
 
 import Notification from "../UtilityComponents/Notification"
 import Form from "../UtilityComponents/Form"
@@ -16,22 +17,31 @@ import { makeStyles } from "@material-ui/core/styles"
 const useStyles = makeStyles(authPageStyles)
 
 export default function Auth(props) {
-	const { open, handleClose, message } = useNotification()
+	const { open, handleClose, message, setMessage, setOpen } = useNotification()
 	const classes = useStyles()
+	const [loading, setLoading] = useState(false)
+	const history = useHistory()
 
 	const { onFormSubmit, initialValues, type, routeTo } = props
 
-	const onSubmit = (formData, { setStatus, setSubmitting }) => {
-		setStatus()
-		onFormSubmit(formData).then(
-			() => {
-				return
-			},
-			error => {
-				setSubmitting(false)
-				setStatus(error)
+	const onSubmit = async formData => {
+		try {
+			setLoading(true)
+			const res = await onFormSubmit(formData)
+
+			localStorage.setItem("user", JSON.stringify(res.user))
+			setLoading(false)
+			history.push("/dashboard")
+		} catch (error) {
+			if (error?.response?.data?.error?.errors?.length > 0) {
+				setMessage(error.response.data.error.errors)
+			} else {
+				setMessage("An error occurred. Please try again.")
 			}
-		)
+
+			setLoading(false)
+			setOpen(true)
+		}
 	}
 
 	return (
@@ -63,6 +73,7 @@ export default function Auth(props) {
 					</Grid>
 
 					<Form
+						loading={loading}
 						type={type}
 						onSubmit={onSubmit}
 						classes={classes}

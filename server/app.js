@@ -3,7 +3,6 @@ const express = require("express")
 const { join } = require("path")
 const cookieParser = require("cookie-parser")
 const logger = require("morgan")
-const cors = require("cors")
 
 const appRoutes = require("./routes")
 
@@ -17,20 +16,17 @@ app.use(urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(join(__dirname, "public")))
 
-const whitelist = [process.env.CLIENT_URL]
-const corsOptions = {
-	origin: function (origin, callback) {
-		if (whitelist.indexOf(origin) !== -1) {
-			callback(null, true)
-		} else {
-			callback(new Error("Not allowed by CORS"))
-		}
-	},
-}
-
-app.use(cors(corsOptions))
-
 app.use("/api", appRoutes)
+
+app.use(function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL)
+	res.header("Access-Control-Allow-Credentials", true)
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-WIth, Content-Type, Accept"
+	)
+	next()
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

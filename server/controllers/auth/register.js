@@ -2,7 +2,7 @@ const createError = require("http-errors")
 
 const {
 	validateEmail,
-	validateName,
+	validateUsername,
 	validatePassword,
 } = require("../../utils/validation")
 
@@ -11,10 +11,10 @@ const { createToken } = require("../../utils/token")
 const { cookieOptions } = require("../../utils/constants")
 
 const validateRequestBody = body => {
-	const { email, name, password } = body
+	const { email, username, password } = body
 	const errors = [
 		...validateEmail(email),
-		...validateName(name),
+		...validateUsername(username),
 		...validatePassword(password),
 	]
 
@@ -46,6 +46,9 @@ const registerUser = async (req, res, next) => {
 
 		return res.status(201).json({
 			message: "User created and logged in successfully",
+			user: {
+				username: newUser.username,
+			},
 		})
 	} catch (error) {
 		console.log(error)
