@@ -2,7 +2,6 @@ const loginPageStyles = theme => ({
 	welcome: {
 		fontSize: 26,
 		paddingBottom: 20,
-		color: "#000000",
 		fontWeight: 500,
 	},
 	buttonHeader: {
@@ -18,9 +17,9 @@ const loginPageStyles = theme => ({
 		width: 170,
 		height: 54,
 		borderRadius: 5,
-		filter: "drop-shadow(0px 2px 6px rgba(74,106,149,0.2))",
-		backgroundColor: "#ffffff",
-		color: "#3a8dff",
+		filter: `drop-shadow(0px 2px 6px ${theme.palette.primary.shadow})`,
+		backgroundColor: theme.palette.primary.btnBackground,
+		color: theme.palette.primary.main,
 		boxShadow: "none",
 		marginRight: 35,
 		textTransform: "none",
@@ -33,7 +32,7 @@ const loginPageStyles = theme => ({
 	},
 	noAcc: {
 		fontSize: 14,
-		color: "#b0b0b0",
+		color: theme.palette.primary.btn,
 		fontWeight: 400,
 		textAlign: "center",
 		marginRight: 21,
@@ -55,7 +54,11 @@ const loginPageStyles = theme => ({
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(1),
 	},
-	label: { fontSize: 19, color: "rgb(0,0,0,0.4)", paddingLeft: "5px" },
+	label: {
+		fontSize: 19,
+		color: theme.palette.primary.label,
+		paddingLeft: "5px",
+	},
 	submit: {
 		margin: theme.spacing(3, 2, 2),
 		padding: 10,
@@ -65,7 +68,7 @@ const loginPageStyles = theme => ({
 		marginTop: 49,
 		fontSize: 16,
 		fontWeight: "bold",
-		backgroundColor: "#3a8dff",
+		backgroundColor: theme.palette.primary.main,
 	},
 	inputs: {
 		marginTop: ".8rem",

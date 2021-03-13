@@ -6,6 +6,12 @@ export const theme = createMuiTheme({
 		fontSize: 12,
 	},
 	palette: {
-		primary: { main: "#3A8DFF" },
+		primary: {
+			main: "#3A8DFF",
+			btn: "#b0b0b0",
+			btnBackground: "#ffffff",
+			shadow: "rgba(74,106,149,0.2)",
+			label: "rgb(0,0,0,0.4)",
+		},
 	},
 })
