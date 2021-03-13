@@ -7,6 +7,11 @@ const defaultOptions = {
 
 const axiosInstance = axios.create(defaultOptions)
 
-axiosInstance.interceptors.response.use(res => res.data)
+axiosInstance.interceptors.response.use(
+	res => res.data,
+	err => {
+		throw err.response.data.error
+	}
+)
 
 export default axiosInstance

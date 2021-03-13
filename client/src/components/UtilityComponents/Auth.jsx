@@ -33,12 +33,10 @@ export default function Auth(props) {
 			setLoading(false)
 			history.push("/dashboard")
 		} catch (error) {
-			if (error?.response?.data?.error?.errors?.length > 0) {
-				setMessage(error.response.data.error.errors)
-			} else {
-				setMessage("An error occurred. Please try again.")
-			}
+			const errMessage =
+				error?.errors || "An error occurred. Please try again."
 
+			setMessage(errMessage)
 			setLoading(false)
 			setOpen(true)
 		}

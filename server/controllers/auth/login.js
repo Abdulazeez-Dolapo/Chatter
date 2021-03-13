@@ -47,6 +47,7 @@ const loginUser = async (req, res, next) => {
 			message: "Logged in successfully",
 			user: {
 				username: user.username,
+				id: user.id,
 			},
 		})
 	} catch (error) {

@@ -1,5 +1,5 @@
 import Auth from "../UtilityComponents/Auth"
-import { signupUser } from "../../services/signup"
+import { signupUser } from "../../services/auth"
 
 const Signup = () => {
 	const initialValues = {
