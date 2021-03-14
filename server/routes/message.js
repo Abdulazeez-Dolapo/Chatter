@@ -1,7 +1,7 @@
 const express = require("express")
 
 const { authenticate } = require("../middlewares/auth")
-const { saveNewMessage } = require("../controllers/message/save")
+const { saveNewMessage } = require("../controllers/message")
 const { fetchUserConversations } = require("../controllers/message/conversation")
 
 const messageRouter = express.Router()
