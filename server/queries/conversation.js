@@ -23,4 +23,13 @@ const findConversation = async ({ senderId, receiverId }) => {
 	})
 }
 
-module.exports = { saveConversation, findConversation }
+const findAllUserConversations = async (userId, include = []) => {
+	return Conversation.findAll({
+		where: {
+			[Op.or]: [{ firstUserId: userId }, { secondUserId: userId }]
+		},
+		include
+	})
+}
+
+module.exports = { saveConversation, findConversation, findAllUserConversations }

@@ -44,8 +44,7 @@ const saveNewMessage = async (req, res, next) => {
 			newMessage,
 		})
 	} catch (error) {
-		console.log(error)
-		return next(createError(500, { errors: ["An error occured"] }))
+		return next(createError(500))
 	}
 }
 
