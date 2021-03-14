@@ -5,7 +5,7 @@ const readCookie = async (req, res, next) => {
 			user: { username: req.user.username, id: req.user.id },
 		})
 	} catch (error) {
-		return next(createError(500, { errors: ["An error occured"] }))
+		return next(createError(500))
 	}
 }
 
