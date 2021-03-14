@@ -1,6 +1,6 @@
 const createError = require("http-errors")
 
-const { saveMessage } = require("../../queries/message")
+const { saveMessage, findAllMessages } = require("../../queries/message")
 const { saveConversation, findConversation } = require("../../queries/conversation")
 
 const validateRequestBody = body => {
@@ -35,6 +35,8 @@ const saveNewMessage = async (req, res, next) => {
 		const messageBody = {
 			conversationId: conversation.id,
 			content,
+			senderId,
+			receiverId
 		}
 
 		const newMessage = await saveMessage(messageBody)
@@ -48,4 +50,17 @@ const saveNewMessage = async (req, res, next) => {
 	}
 }
 
-module.exports = { saveNewMessage }
+const fetchAllMessagesInConversation = async (req, res, next) => {
+	try {
+		const conversationId = parseInt(req.params.conversationId)
+		const messages = await findAllMessages(conversationId, ["sender", "receiver"])
+		
+		return res.status(200).json({
+			messages,
+		})
+	} catch (error) {
+		return next(createError(500))
+	}
+}
+
+module.exports = { saveNewMessage, fetchAllMessagesInConversation }

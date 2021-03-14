@@ -4,4 +4,8 @@ const saveMessage = async newMessageData => {
 	return await Message.create(newMessageData)
 }
 
-module.exports = { saveMessage }
+const findAllMessages = async (conversationId, include = [], order = [["createdAt", "DESC"]]) => {
+	return await Message.findAll({ where: { conversationId }, include, order})
+}
+
+module.exports = { saveMessage, findAllMessages }
