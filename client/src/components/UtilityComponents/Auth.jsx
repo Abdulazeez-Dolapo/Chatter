@@ -1,12 +1,12 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Link, useHistory } from "react-router-dom"
 
 import Notification from "../UtilityComponents/Notification"
 import Form from "../UtilityComponents/Form"
 
 import { useNotification } from "../../hooks/notification"
-
 import authPageStyles from "../../styles/authPage"
+import AuthContext from "../../context/AuthContext"
 
 import Button from "@material-ui/core/Button"
 import Box from "@material-ui/core/Box"
@@ -22,6 +22,8 @@ export default function Auth(props) {
 	const [loading, setLoading] = useState(false)
 	const history = useHistory()
 
+	const { setUser, setIsLoggedIn } = useContext(AuthContext)
+
 	const { onFormSubmit, initialValues, type, routeTo } = props
 
 	const onSubmit = async formData => {
@@ -29,7 +31,9 @@ export default function Auth(props) {
 			setLoading(true)
 			const res = await onFormSubmit(formData)
 
-			localStorage.setItem("user", JSON.stringify(res.user))
+			setUser(res.user)
+			setIsLoggedIn(true)
+
 			setLoading(false)
 			history.push("/dashboard")
 		} catch (error) {
