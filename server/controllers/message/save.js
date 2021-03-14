@@ -1,6 +1,7 @@
 const createError = require("http-errors")
 
 const { saveMessage } = require("../../queries/message")
+const { saveConversation, findConversation } = require("../../queries/conversation")
 
 const validateRequestBody = body => {
 	const { receiverId, content } = body
@@ -20,11 +21,20 @@ const saveNewMessage = async (req, res, next) => {
 
 		const { receiverId, content } = req.body
 		const senderId = req.user.id
+		const conversationBody = { senderId, receiverId }
+
+		let conversation
+		// Check if a conversation already exist for both users
+		conversation = await findConversation(conversationBody)
+
+		// If none exists, create a new conversation
+		if(!conversation) {
+			conversation = await saveConversation({ firstUserId: senderId, secondUserId: receiverId })
+		}
 
 		const messageBody = {
-			receiverId,
+			conversationId: conversation.id,
 			content,
-			senderId,
 		}
 
 		const newMessage = await saveMessage(messageBody)
