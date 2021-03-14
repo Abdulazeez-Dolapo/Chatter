@@ -1,21 +1,13 @@
 const { User } = require("../database/models")
 
 const findUser = async (where, scope = "defaultScope") => {
-	try {
-		return await User.scope(scope).findOne({
-			where,
-		})
-	} catch (err) {
-		return err
-	}
+	return await User.scope(scope).findOne({
+		where,
+	})
 }
 
 const createUser = async newUserData => {
-	try {
-		return await User.create(newUserData)
-	} catch (err) {
-		return err
-	}
+	return await User.create(newUserData)
 }
 
 module.exports = { findUser, createUser }
