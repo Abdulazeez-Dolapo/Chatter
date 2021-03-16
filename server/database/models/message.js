@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
 		indexes: [{ fields: ['createdAt'] }]
 	})
 
+	// Update the lastMessageId of the conversation the message belong to
 	Message.afterCreate((message) => {
 		const { id, conversationId } = message
 		sequelize.models.Conversation.update({ lastMessageId: id }, { where: { id: conversationId }})

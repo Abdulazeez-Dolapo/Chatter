@@ -4,4 +4,8 @@ const saveParticipants = async participants => {
 	return await Participant.bulkCreate(participants)
 }
 
-module.exports = { saveParticipants }
+const findAllUserConversations = async (userId, include = ["conversation"]) => {
+	return await Participant.findAll({ where: { userId }, include})
+}
+
+module.exports = { saveParticipants, findAllUserConversations }

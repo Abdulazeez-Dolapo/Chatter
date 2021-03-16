@@ -1,7 +1,8 @@
 const createError = require("http-errors")
+const { Conversation } = require('../../database/models')
 
-const { findAllUserConversations, saveConversation } = require("../../queries/conversation")
-const { saveParticipants } = require("../../queries/participant")
+const { saveConversation } = require("../../queries/conversation")
+const { saveParticipants, findAllUserConversations } = require("../../queries/participant")
 
 const validateRequestBody = body => {
 	const { receivers } = body
@@ -42,7 +43,12 @@ const createConversation = async (req, res, next) => {
 const fetchUserConversations = async (req, res, next) => {
 	try {
 		const userId = req.user.id
-      const include = ["firstUser", "secondUser"]
+      const include = [{ 
+			model: Conversation,
+			as: "conversation",
+			include: ["lastMessage"]
+		}]
+
 		const conversations = await findAllUserConversations(userId, include)
 
 		if (conversations.length === 0) {
