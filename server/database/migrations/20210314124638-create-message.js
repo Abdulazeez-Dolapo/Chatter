@@ -20,10 +20,6 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false,
 			},
-			receiverId: {
-				type: Sequelize.INTEGER,
-				allowNull: false,
-			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE
