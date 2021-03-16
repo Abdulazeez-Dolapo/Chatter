@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 	{
 		sequelize,
 		modelName: 'Message',
-		indexes: [{ fields: 'createdAt' }]
+		indexes: [{ fields: ['createdAt'] }]
 	})
 
 	Message.afterCreate((message) => {

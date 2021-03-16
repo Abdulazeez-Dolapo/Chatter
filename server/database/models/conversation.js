@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Conversation',
-			indexes: [{ fields: 'lastMessageId' }]
+			indexes: [{ fields: ['lastMessageId'] }]
 		}
 	)
 
