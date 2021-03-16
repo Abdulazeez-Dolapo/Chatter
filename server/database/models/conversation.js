@@ -10,26 +10,22 @@ module.exports = (sequelize, DataTypes) => {
 	*/
 		static associate(models) {
 			// define association here
-			this.belongsTo(models.User, {
-				foreignKey: "firstUserId",
-				as: "firstUser",
-			})
-
-			this.belongsTo(models.User, {
-				foreignKey: "secondUserId",
-				as: "secondUser",
+			this.belongsTo(models.Message, {
+				foreignKey: "lastMessageId",
+				as: "lastMessage",
 			})
 		}
 	}
 
-	Conversation.init({
-		firstUserId: DataTypes.INTEGER,
-		secondUserId: DataTypes.INTEGER
-	},
-	{
-		sequelize,
-		modelName: 'Conversation',
-	})
+		Conversation.init({
+			lastMessageId: DataTypes.INTEGER,
+		},
+		{
+			sequelize,
+			modelName: 'Conversation',
+			indexes: [{ fields: 'lastMessageId' }]
+		}
+	)
 
 	return Conversation
 }

@@ -8,11 +8,7 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.INTEGER
 			},
-			firstUserId: {
-				type: Sequelize.INTEGER,
-				allowNull: false,
-			},
-			secondUserId: {
+			lastMessageId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
 			},
@@ -25,6 +21,8 @@ module.exports = {
 				type: Sequelize.DATE
 			}
 		})
+
+		await queryInterface.addIndex('Conversations', ['lastMessageId'])
 	},
 
 	down: async (queryInterface, Sequelize) => {
