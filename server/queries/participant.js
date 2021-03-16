@@ -8,4 +8,8 @@ const findAllUserConversations = async (userId, include = ["conversation"]) => {
 	return await Participant.findAll({ where: { userId }, include})
 }
 
-module.exports = { saveParticipants, findAllUserConversations }
+const findAllUsersInConversation = async (conversationId, include = ["user"]) => {
+	return await Participant.findAll({ where: { conversationId }, include})
+}
+
+module.exports = { saveParticipants, findAllUserConversations, findAllUsersInConversation }

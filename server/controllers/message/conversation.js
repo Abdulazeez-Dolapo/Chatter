@@ -2,7 +2,7 @@ const createError = require("http-errors")
 const { Conversation } = require('../../database/models')
 
 const { saveConversation } = require("../../queries/conversation")
-const { saveParticipants, findAllUserConversations } = require("../../queries/participant")
+const { saveParticipants, findAllUserConversations, findAllUsersInConversation } = require("../../queries/participant")
 
 const validateRequestBody = body => {
 	const { receivers } = body
@@ -63,4 +63,22 @@ const fetchUserConversations = async (req, res, next) => {
 	}
 }
 
-module.exports = { fetchUserConversations, createConversation }
+const fetchUsersInConversation = async (req, res, next) => {
+	try {
+		const conversationId = req.params.conversationId
+
+		const users = await findAllUsersInConversation(conversationId)
+
+		if (users.length === 0) {
+			return next(createError(404, "No users found"))
+		}
+
+		return res.status(200).json({
+			users,
+		})
+	} catch (error) {
+		return next(createError(500))
+	}
+}
+
+module.exports = { fetchUserConversations, createConversation, fetchUsersInConversation }
