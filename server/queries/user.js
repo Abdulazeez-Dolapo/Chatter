@@ -1,21 +1,22 @@
 const { User } = require("../database/models")
+const { Op } = require('sequelize')
 
 const findUser = async (where, scope = "defaultScope") => {
-	try {
-		return await User.scope(scope).findOne({
-			where,
-		})
-	} catch (err) {
-		return err
-	}
+	return await User.scope(scope).findOne({
+		where,
+	})
 }
 
 const createUser = async newUserData => {
-	try {
-		return await User.create(newUserData)
-	} catch (err) {
-		return err
-	}
+	return await User.create(newUserData)
 }
 
-module.exports = { findUser, createUser }
+const findAllUsers = async () => {
+	return await User.findAll()
+}
+
+const searchUser = async username => {
+	return await User.findAll({ where: { username: { [Op.substring]: username.toLowerCase() }}})
+}
+
+module.exports = { findUser, createUser, searchUser, findAllUsers }

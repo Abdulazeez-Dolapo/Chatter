@@ -4,8 +4,7 @@ const { validateEmail, validatePassword } = require("../../utils/validation")
 const { comparePassword } = require("../../utils/encrypt")
 const { createToken } = require("../../utils/token")
 const { cookieOptions } = require("../../utils/constants")
-
-const UserQueries = require("../../queries/user")
+const { findUser } = require("../../queries/user")
 
 const validateRequestBody = body => {
 	const { email, password } = body
@@ -27,7 +26,7 @@ const loginUser = async (req, res, next) => {
 		const { password, email } = req.body
 
 		// find the user
-		const user = await UserQueries.findUser({ email }, "withPassword")
+		const user = await findUser({ email }, "withPassword")
 		if (!user) {
 			return next(createError(400, { errors }))
 		}
@@ -52,7 +51,7 @@ const loginUser = async (req, res, next) => {
 		})
 	} catch (error) {
 		console.log(error)
-		return next(createError(500, { errors: ["An error occured"] }))
+		return next(createError(500))
 	}
 }
 
