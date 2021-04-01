@@ -4,9 +4,10 @@ const userInfo = theme => ({
 		display: "flex",
 		alignItems: "center",
 		padding: "1rem",
-		height: "4rem",
+		height: "6vh",
 		borderRadius: "5px",
 		boxShadow: `14px 6px 22px ${theme.palette.secondary.main}`,
+		marginBottom: "1rem",
 	},
 	name: {
 		textTransform: "lowercase",
