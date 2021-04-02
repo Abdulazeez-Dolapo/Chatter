@@ -6,7 +6,6 @@ import { theme } from "./themes/theme.js"
 
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
-import Dashboard from "./pages/Dashboard"
 import Chat from "./pages/Chat"
 import ProtectedRoute from "./components/UtilityComponents/ProtectedRoute.jsx"
 
@@ -21,10 +20,8 @@ function App() {
 
 					<Route exact path="/signup" component={Signup} />
 
-					<Route exact path="/chat" component={Chat} />
-
-					<ProtectedRoute exact path="/dashboard">
-						<Dashboard />
+					<ProtectedRoute exact path="/chat">
+						<Chat />
 					</ProtectedRoute>
 				</BrowserRouter>
 			</MuiThemeProvider>
