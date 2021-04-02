@@ -53,16 +53,28 @@ const fetchUserConversations = async (req, res, next) => {
 				as: "conversation",
 				include: ["lastMessage"],
 			},
+			"user",
 		]
 
-		const conversations = await findAllUserConversations(userId, include)
+		const conversations = await findAllUserConversations(userId)
 
-		if (conversations.length === 0) {
+		if (conversations && conversations.length === 0) {
 			return next(createError(404, "No conversations found"))
 		}
 
+		const conversationIds = conversations.map(
+			conversation => conversation.conversationId
+		)
+
+		// Fetch all other members of the user's conversations
+		const otherUsersInConversations = await findAllUsersInConversation(
+			conversationIds,
+			include,
+			userId
+		)
+
 		return res.status(200).json({
-			conversations,
+			conversations: otherUsersInConversations,
 		})
 	} catch (error) {
 		return next(createError(500))
