@@ -17,9 +17,9 @@ const ProfileDisplay = props => {
 	const classes = useStyles()
 	const {
 		imageUrl = "https://picsum.photos/id/237/200/300",
-		name = "Thomas",
+		name,
 		onlineStatus = true,
-		message = "Hey peeps",
+		message,
 	} = props
 
 	return (

@@ -13,6 +13,9 @@ const contactList = theme => ({
 	},
 	contactList: {
 		padding: "1rem",
+		"&:hover": {
+			cursor: "pointer",
+		},
 	},
 	noBorder: {
 		border: "none",
