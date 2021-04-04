@@ -18,14 +18,14 @@ const ProfileDisplay = props => {
 	const {
 		imageUrl = "https://picsum.photos/id/237/200/300",
 		name,
-		onlineStatus = true,
+		onlineStatus,
 		message,
 	} = props
 
 	return (
 		<div className={classes.root}>
 			<StyledBadge
-				color={onlineStatus ? "primary" : "secondary"}
+				color={onlineStatus ? "primary" : "error"}
 				badgeContent=" "
 				anchorOrigin={{
 					vertical: "bottom",

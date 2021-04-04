@@ -15,9 +15,11 @@ import { fetchUserChatList } from "../../services/messages"
 
 const useStyles = makeStyles(contactListStyles)
 
-const ContactList = () => {
+const ContactList = props => {
 	const classes = useStyles()
 	const history = useHistory()
+
+	const { onlineUsers } = props
 
 	const [searchValue, setSearchValue] = useState("")
 	const [chatListLoading, setChatListLoading] = useState(false)
@@ -49,6 +51,10 @@ const ContactList = () => {
 		history.push(`/chat?cid=${conversationId}`)
 	}
 
+	const checkOnlineStatus = userId => {
+		return onlineUsers.find(user => user.userId === userId)
+	}
+
 	return (
 		<div className={classes.root}>
 			<Typography variant="h3" className={classes.heading}>
@@ -77,6 +83,7 @@ const ContactList = () => {
 							<ProfileDisplay
 								name={list?.user?.username}
 								message={list?.conversation?.lastMessage?.content}
+								onlineStatus={checkOnlineStatus(list?.user?.id)}
 							/>
 						</div>
 					))
