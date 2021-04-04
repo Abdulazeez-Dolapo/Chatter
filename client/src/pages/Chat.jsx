@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
@@ -8,6 +8,7 @@ import ContactList from "../components/Chat/ContactList"
 import ChatArea from "../components/Chat/ChatArea"
 
 import AuthContext from "../context/AuthContext"
+import socket from "../socket"
 
 import chatPageStyles from "../styles/chat/chatPage"
 
@@ -16,6 +17,13 @@ const useStyles = makeStyles(chatPageStyles)
 const Chat = () => {
 	const classes = useStyles()
 	const { user } = useContext(AuthContext)
+
+	useEffect(() => {
+		return () => {
+			socket.emit("disconnect")
+			socket.off()
+		}
+	}, [])
 
 	return (
 		<Grid container className={classes.root}>
