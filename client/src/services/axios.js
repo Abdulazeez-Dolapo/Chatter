@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const defaultOptions = {
-	baseURL: "/api",
+	baseURL: process.env.REACT_APP_BASE_URL,
 	withCredentials: true,
 }
 

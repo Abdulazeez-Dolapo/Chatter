@@ -18,13 +18,16 @@ app.use(express.static(join(__dirname, "public")))
 
 app.use("/api", appRoutes)
 
+// Cors handler
 app.use(function (req, res, next) {
-	res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL)
+	res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL)
 	res.header("Access-Control-Allow-Credentials", true)
 	res.header(
 		"Access-Control-Allow-Headers",
 		"Origin, X-Requested-WIth, Content-Type, Accept"
 	)
+	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+
 	next()
 })
 

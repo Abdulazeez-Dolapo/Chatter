@@ -23,7 +23,7 @@ const saveNewMessage = async (req, res, next) => {
 		const messageBody = {
 			conversationId,
 			content,
-			senderId: req.user.id
+			senderId: req.user.id,
 		}
 
 		const newMessage = await saveMessage(messageBody)
@@ -42,7 +42,7 @@ const fetchAllMessagesInConversation = async (req, res, next) => {
 	try {
 		const conversationId = parseInt(req.params.conversationId)
 		const messages = await findAllMessages(conversationId, ["sender"])
-		
+
 		return res.status(200).json({
 			messages,
 		})

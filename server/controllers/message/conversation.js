@@ -1,8 +1,12 @@
 const createError = require("http-errors")
-const { Conversation } = require('../../database/models')
+const { Conversation } = require("../../database/models")
 
 const { saveConversation } = require("../../queries/conversation")
-const { saveParticipants, findAllUserConversations, findAllUsersInConversation } = require("../../queries/participant")
+const {
+	saveParticipants,
+	findAllUserConversations,
+	findAllUsersInConversation,
+} = require("../../queries/participant")
 
 const validateRequestBody = body => {
 	const { receivers } = body
@@ -13,7 +17,7 @@ const validateRequestBody = body => {
 const addParticipantsToConversation = async (receivers, conversationId) => {
 	const participants = receivers.map(receiver => ({
 		userId: receiver,
-		conversationId
+		conversationId,
 	}))
 
 	return await saveParticipants(participants)
@@ -33,7 +37,7 @@ const createConversation = async (req, res, next) => {
 		await addParticipantsToConversation(req.body.receivers, conversation.id)
 
 		return res.status(201).json({
-			conversation
+			conversation,
 		})
 	} catch (error) {
 		return next(createError(500))
@@ -43,20 +47,34 @@ const createConversation = async (req, res, next) => {
 const fetchUserConversations = async (req, res, next) => {
 	try {
 		const userId = req.user.id
-      const include = [{ 
-			model: Conversation,
-			as: "conversation",
-			include: ["lastMessage"]
-		}]
+		const include = [
+			{
+				model: Conversation,
+				as: "conversation",
+				include: ["lastMessage"],
+			},
+			"user",
+		]
 
-		const conversations = await findAllUserConversations(userId, include)
+		const conversations = await findAllUserConversations(userId)
 
-		if (conversations.length === 0) {
+		if (conversations && conversations.length === 0) {
 			return next(createError(404, "No conversations found"))
 		}
 
+		const conversationIds = conversations.map(
+			conversation => conversation.conversationId
+		)
+
+		// Fetch all other members of the user's conversations
+		const otherUsersInConversations = await findAllUsersInConversation(
+			conversationIds,
+			include,
+			userId
+		)
+
 		return res.status(200).json({
-			conversations,
+			conversations: otherUsersInConversations,
 		})
 	} catch (error) {
 		return next(createError(500))
@@ -81,4 +99,8 @@ const fetchUsersInConversation = async (req, res, next) => {
 	}
 }
 
-module.exports = { fetchUserConversations, createConversation, fetchUsersInConversation }
+module.exports = {
+	fetchUserConversations,
+	createConversation,
+	fetchUsersInConversation,
+}

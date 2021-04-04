@@ -35,7 +35,7 @@ export default function Auth(props) {
 			setIsLoggedIn(true)
 
 			setLoading(false)
-			history.push("/dashboard")
+			history.push("/chat")
 		} catch (error) {
 			const errMessage =
 				error?.errors || "An error occurred. Please try again."
