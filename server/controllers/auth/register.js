@@ -39,7 +39,7 @@ const registerUser = async (req, res, next) => {
 
 		// create a new user
 		const newUser = await createUser(req.body)
-		const token = createToken({ id: newUser.id })
+		const token = createToken({ id: newUser.id, username: newUser.username })
 
 		// set cookie
 		res.cookie("token", token, cookieOptions)

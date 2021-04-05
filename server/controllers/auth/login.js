@@ -37,7 +37,7 @@ const loginUser = async (req, res, next) => {
 			return next(createError(400, { errors }))
 		}
 
-		const token = createToken({ id: user.id })
+		const token = createToken({ id: user.id, username: user.username })
 
 		// set cookie
 		res.cookie("token", token, cookieOptions)
