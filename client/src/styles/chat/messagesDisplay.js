@@ -9,11 +9,13 @@ const messagesDisplay = theme => ({
 		width: "100%",
 		display: "flex",
 		justifyContent: "flex-end",
+		padding: "0.5rem, 0"
 	},
 	receiverRow: {
 		width: "100%",
 		display: "flex",
 		justifyContent: "flex-start",
+		padding: "0.5rem, 0"
 	},
 })
 

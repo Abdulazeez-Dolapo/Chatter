@@ -8,6 +8,7 @@ import ContactList from "../components/Chat/ContactList"
 import ChatArea from "../components/Chat/ChatArea"
 
 import AuthContext from "../context/AuthContext"
+import MessageContext from "../context/MessageContext"
 import socket from "../socket"
 
 import chatPageStyles from "../styles/chat/chatPage"
@@ -17,6 +18,7 @@ const useStyles = makeStyles(chatPageStyles)
 const Chat = () => {
 	const classes = useStyles()
 	const { user } = useContext(AuthContext)
+	const { messages, setMessages } = useContext(MessageContext)
 
 	const [onlineUsers, setOnlineUsers] = useState([])
 
@@ -47,6 +49,11 @@ const Chat = () => {
 		}
 	}, [])
 
+	const addMessages = newMessages => {
+		const allMessages = [...messages, ...newMessages]
+		setMessages(allMessages)
+	}
+
 	return (
 		<Grid container className={classes.root}>
 			<Grid item xs={12} sm={4}>
@@ -54,7 +61,7 @@ const Chat = () => {
 					<ProfileDisplay name={user?.username} onlineStatus={true} />
 				</Grid>
 
-				<ContactList onlineUsers={onlineUsers} />
+				<ContactList onlineUsers={onlineUsers} addMessages={addMessages} />
 			</Grid>
 
 			<Grid item xs={12} sm={8} className={classes.chatArea}>

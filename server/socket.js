@@ -1,4 +1,5 @@
 const { verifyToken } = require("./utils/token")
+const {findAllMessages, saveMessage} = require('./queries/message')
 
 const socketConnection = server => {
 	const io = require("socket.io")(server, {
@@ -22,6 +23,7 @@ const socketConnection = server => {
 			if (!decoded) return next(new Error("Authentication error"))
 
 			socket.userId = decoded.id
+			socket.username = decoded.username
 
 			next()
 		} catch (error) {
@@ -29,7 +31,7 @@ const socketConnection = server => {
 		}
 	}).on("connection", async socket => {
 		try {
-			console.log(socket.userId, "connected")
+			console.log(socket.username, "connected")
 
 			// Find and emit all connected (online) users
 			const users = []
@@ -42,6 +44,13 @@ const socketConnection = server => {
 			// notify existing users when a user connects
 			socket.broadcast.emit("user connected", {
 				userId: socket.userId,
+			})
+
+			// join a conversation, fetch all messages in said conversation and send it on
+			socket.on("join conversation", async (conversationId) => {
+				console.log(conversationId, "was joined")
+				const messages = await findAllMessages(conversationId, ["sender"])
+				socket.emit("messages", messages)
 			})
 
 			socket.on("disconnect", () => {

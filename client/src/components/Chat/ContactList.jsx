@@ -12,6 +12,7 @@ import TextInput from "../UtilityComponents/TextInput"
 import ProfileDisplay from "../User/ProfileDisplay"
 
 import { fetchUserChatList } from "../../services/messages"
+import socket from "../../socket"
 
 const useStyles = makeStyles(contactListStyles)
 
@@ -19,11 +20,12 @@ const ContactList = props => {
 	const classes = useStyles()
 	const history = useHistory()
 
-	const { onlineUsers } = props
+	const { onlineUsers, addMessages } = props
 
 	const [searchValue, setSearchValue] = useState("")
 	const [chatListLoading, setChatListLoading] = useState(false)
 	const [chatList, setChatList] = useState([])
+	
 
 	useEffect(() => {
 		const getChatList = async () => {
@@ -40,6 +42,10 @@ const ContactList = props => {
 		}
 
 		getChatList()
+
+		socket.on("messages", messages => {
+			addMessages(messages)
+		})
 	}, [])
 
 	const handleChange = e => {
@@ -49,6 +55,7 @@ const ContactList = props => {
 
 	const selectChat = conversationId => {
 		history.push(`/chat?cid=${conversationId}`)
+		socket.emit("join conversation", conversationId)
 	}
 
 	const checkOnlineStatus = userId => {
