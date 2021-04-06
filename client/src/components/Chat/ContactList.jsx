@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useHistory } from "react-router-dom"
 
 import Typography from "@material-ui/core/Typography"
@@ -13,6 +13,7 @@ import ProfileDisplay from "../User/ProfileDisplay"
 
 import { fetchUserChatList } from "../../services/messages"
 import socket from "../../socket"
+import MessageContext from '../../context/MessageContext'
 
 const useStyles = makeStyles(contactListStyles)
 
@@ -20,12 +21,12 @@ const ContactList = props => {
 	const classes = useStyles()
 	const history = useHistory()
 
-	const { onlineUsers, addMessages } = props
+	const { addMessages } = props
+	const { setSelectedUser, checkOnlineStatus } = useContext(MessageContext)
 
 	const [searchValue, setSearchValue] = useState("")
 	const [chatListLoading, setChatListLoading] = useState(false)
 	const [chatList, setChatList] = useState([])
-	
 
 	useEffect(() => {
 		const getChatList = async () => {
@@ -53,13 +54,12 @@ const ContactList = props => {
 		setSearchValue(value)
 	}
 
-	const selectChat = conversationId => {
+	const selectChat = conversation => {
+		const { conversationId, user: { username, id }} = conversation
+
 		history.push(`/chat?cid=${conversationId}`)
 		socket.emit("join conversation", conversationId)
-	}
-
-	const checkOnlineStatus = userId => {
-		return onlineUsers.find(user => user.userId === userId)
+		setSelectedUser({ username, id })
 	}
 
 	return (
@@ -85,7 +85,7 @@ const ContactList = props => {
 						<div
 							key={list.id}
 							className={classes.contactList}
-							onClick={() => selectChat(list.conversationId)}
+							onClick={() => selectChat(list)}
 						>
 							<ProfileDisplay
 								name={list?.user?.username}

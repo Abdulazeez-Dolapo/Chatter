@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
@@ -8,11 +8,13 @@ import TextInput from "../UtilityComponents/TextInput"
 import MessagesDisplay from "./MessagesDisplay"
 
 import chatAreaStyles from "../../styles/chat/chatArea"
+import MessageContext from '../../context/MessageContext'
 
 const useStyles = makeStyles(chatAreaStyles)
 
 const ChatArea = () => {
 	const classes = useStyles()
+	const { selectedUser: { username, id }, checkOnlineStatus } = useContext(MessageContext)
 
 	const [message, setMessage] = useState("")
 
@@ -23,7 +25,8 @@ const ChatArea = () => {
 
 	return (
 		<div className={classes.root}>
-			<UserInfo onlineStatus />
+			<UserInfo username={username} onlineStatus={checkOnlineStatus(id)} />
+
 			<MessagesDisplay />
 
 			<Grid className={classes.textInput}>

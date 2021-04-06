@@ -15,8 +15,15 @@ const userInfo = theme => ({
 		marginRight: "1.1rem",
 	},
 	online: { fontSize: "1rem", color: theme.palette.secondary.main },
-	circle: {
+	onlineCircle: {
 		backgroundColor: theme.palette.primary.main,
+		borderRadius: "100%",
+		width: 10,
+		height: 10,
+		marginRight: 10,
+	},
+	offlineCircle: {
+		backgroundColor: theme.palette.secondary.main,
 		borderRadius: "100%",
 		width: 10,
 		height: 10,
