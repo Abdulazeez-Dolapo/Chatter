@@ -21,11 +21,26 @@ const ContactList = props => {
 	const classes = useStyles()
 	const history = useHistory()
 
-	const { setSelectedUser, checkOnlineStatus, messages, setMessages } = useContext(MessageContext)
+	const { setSelectedUser, selectedUser: { conversationId }, checkOnlineStatus, messages, setMessages } = useContext(MessageContext)
 
 	const [searchValue, setSearchValue] = useState("")
 	const [chatListLoading, setChatListLoading] = useState(false)
 	const [chatList, setChatList] = useState([])
+	const [newMessage, setNewMessage] = useState({})
+	const [conversationMessages, setConversationMessages] = useState({})
+
+	useEffect(() => {
+		setMessages({...messages, [conversationId]: conversationMessages })
+	}, [conversationMessages])
+
+	useEffect(() => {
+		let allConversationMessages = []
+		if(messages[newMessage.conversationId]) {
+			allConversationMessages = [...messages[newMessage.conversationId], newMessage]
+		}
+		
+		setMessages({...messages, [newMessage.conversationId]: allConversationMessages })
+	}, [newMessage])
 
 	useEffect(() => {
 		const getChatList = async () => {
@@ -43,10 +58,16 @@ const ContactList = props => {
 
 		getChatList()
 
-		socket.on("messages", ({ messages: newMessages, conversationId }) => {
-			setMessages({...messages, [conversationId]: newMessages })
+		socket.on("messages", messages => {
+			setConversationMessages(messages)
+		})
+
+		socket.on("message", (newMessageBody) => {
+			setNewMessage(newMessageBody)
 		})
 	}, [])
+
+
 
 	const handleChange = e => {
 		const { value } = e.target

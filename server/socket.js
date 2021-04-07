@@ -47,19 +47,17 @@ const socketConnection = server => {
 
 			// Join a conversation, fetch all messages in said conversation and send it on
 			socket.on("join conversation", async (conversationId) => {
-				console.log(conversationId, "was joined")
 				socket.join(conversationId)
 				const messages = await findAllMessages(conversationId, ["sender"])
-				socket.emit("messages", { messages, conversationId })
+				socket.emit("messages", messages)
 			})
 
 			// Handle a new message sent by a user 
 			socket.on('send message', async messageBody => {
 				const { content, conversationId } = messageBody
-				await saveMessage({ content, conversationId, senderId: userId})
-				// const newMessage = { ...message.dataValues, sender: { id: userId, username }}
-				const messages = await findAllMessages(conversationId, ["sender"])
-				io.to(conversationId).emit("messages", { conversationId, messages })
+				const message = await saveMessage({ content, conversationId, senderId: userId})
+				const newMessage = { ...message.dataValues, sender: { id: userId, username }}
+				io.to(conversationId).emit("message", newMessage)
 			})
 
 			socket.on("disconnect", () => {
