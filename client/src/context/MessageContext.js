@@ -3,7 +3,7 @@ import { useState, createContext } from "react"
 const MessageContext = createContext()
 
 export const MessageProvider = ({ children }) => {
-	const [messages, setMessages] = useState([])
+	const [messages, setMessages] = useState({})
 	const [onlineUsers, setOnlineUsers] = useState([])
 	const [selectedUser, setSelectedUser] = useState({})
 

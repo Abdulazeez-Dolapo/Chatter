@@ -21,8 +21,7 @@ const ContactList = props => {
 	const classes = useStyles()
 	const history = useHistory()
 
-	const { addMessages } = props
-	const { setSelectedUser, checkOnlineStatus } = useContext(MessageContext)
+	const { setSelectedUser, checkOnlineStatus, messages, setMessages } = useContext(MessageContext)
 
 	const [searchValue, setSearchValue] = useState("")
 	const [chatListLoading, setChatListLoading] = useState(false)
@@ -44,8 +43,8 @@ const ContactList = props => {
 
 		getChatList()
 
-		socket.on("messages", messages => {
-			addMessages(messages)
+		socket.on("messages", ({ messages: newMessages, conversationId }) => {
+			setMessages({...messages, [conversationId]: newMessages })
 		})
 	}, [])
 
@@ -59,7 +58,7 @@ const ContactList = props => {
 
 		history.push(`/chat?cid=${conversationId}`)
 		socket.emit("join conversation", conversationId)
-		setSelectedUser({ username, id })
+		setSelectedUser({ username, id, conversationId })
 	}
 
 	return (

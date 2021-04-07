@@ -18,7 +18,7 @@ const useStyles = makeStyles(chatPageStyles)
 const Chat = () => {
 	const classes = useStyles()
 	const { user } = useContext(AuthContext)
-	const { messages, setMessages, onlineUsers, setOnlineUsers } = useContext(MessageContext)
+	const { onlineUsers, setOnlineUsers } = useContext(MessageContext)
 
 	useEffect(() => {
 		socket.connect()
@@ -44,13 +44,9 @@ const Chat = () => {
 
 		return () => {
 			socket.disconnect()
+			socket.off("connect_error")
 		}
 	}, [])
-
-	const addMessages = newMessages => {
-		const allMessages = [...messages, ...newMessages]
-		setMessages(allMessages)
-	}
 
 	return (
 		<Grid container className={classes.root}>
@@ -59,7 +55,7 @@ const Chat = () => {
 					<ProfileDisplay name={user?.username} onlineStatus={true} />
 				</Grid>
 
-				<ContactList addMessages={addMessages} />
+				<ContactList />
 			</Grid>
 
 			<Grid item xs={12} sm={8} className={classes.chatArea}>

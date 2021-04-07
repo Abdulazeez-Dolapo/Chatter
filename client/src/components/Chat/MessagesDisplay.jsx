@@ -14,13 +14,13 @@ const useStyles = makeStyles(messagesDisplayStyles)
 const MessagesDisplay = () => {
 	const classes = useStyles()
 
-	const { messages } = useContext(MessageContext)
+	const { messages, selectedUser: { conversationId } } = useContext(MessageContext)
 	const { user } = useContext(AuthContext)
 
 	return (
 		<div className={classes.root}>
-			{messages?.length > 0
-				? messages.map((message, index) => (
+			{messages[conversationId]?.length > 0
+				? messages[conversationId].map((message, index) => (
 						<Grid
 							key={index}
 							className={
