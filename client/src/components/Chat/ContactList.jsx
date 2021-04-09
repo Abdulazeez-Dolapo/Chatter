@@ -38,7 +38,7 @@ const ContactList = props => {
 	useEffect(() => {
 		let allConversationMessages = []
 		if(messages[newMessage.conversationId]) {
-			allConversationMessages = [...messages[newMessage.conversationId], {...newMessage, read: false }]
+			allConversationMessages = [...messages[newMessage.conversationId], {...newMessage, read: newMessage.conversationId === conversationId }]
 		}
 
 		setMessages({...messages, [newMessage.conversationId]: allConversationMessages })
