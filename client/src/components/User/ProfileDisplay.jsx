@@ -20,6 +20,7 @@ const ProfileDisplay = props => {
 		name,
 		onlineStatus,
 		message,
+		unread
 	} = props
 
 	return (
@@ -45,6 +46,7 @@ const ProfileDisplay = props => {
 				{message && (
 					<Typography className={classes.message}>{message}</Typography>
 				)}
+				{unread > 0 && unread}
 			</div>
 		</div>
 	)

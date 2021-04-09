@@ -14,6 +14,7 @@ import ProfileDisplay from "../User/ProfileDisplay"
 import { fetchUserChatList } from "../../services/messages"
 import socket from "../../socket"
 import MessageContext from '../../context/MessageContext'
+import AuthContext from '../../context/AuthContext'
 
 const useStyles = makeStyles(contactListStyles)
 
@@ -22,6 +23,7 @@ const ContactList = props => {
 	const history = useHistory()
 
 	const { setSelectedUser, selectedUser: { conversationId }, checkOnlineStatus, messages, setMessages } = useContext(MessageContext)
+	const { user: { id }} = useContext(AuthContext)
 
 	const [searchValue, setSearchValue] = useState("")
 	const [chatListLoading, setChatListLoading] = useState(false)
@@ -36,7 +38,7 @@ const ContactList = props => {
 	useEffect(() => {
 		let allConversationMessages = []
 		if(messages[newMessage.conversationId]) {
-			allConversationMessages = [...messages[newMessage.conversationId], newMessage]
+			allConversationMessages = [...messages[newMessage.conversationId], {...newMessage, read: false }]
 		}
 
 		setMessages({...messages, [newMessage.conversationId]: allConversationMessages })
@@ -67,8 +69,6 @@ const ContactList = props => {
 		})
 	}, [])
 
-
-
 	const handleChange = e => {
 		const { value } = e.target
 		setSearchValue(value)
@@ -80,6 +80,16 @@ const ContactList = props => {
 		history.push(`/chat?cid=${conversationId}`)
 		socket.emit("join conversation", conversationId)
 		setSelectedUser({ username, id, conversationId })
+	}
+
+	const getNumberOfUnreadMessages = (msgConversationId) => {
+		if(!msgConversationId) return
+		if(conversationId === msgConversationId) return
+
+		const conversationMessages = messages[msgConversationId]
+		const unreadMessages = conversationMessages?.filter(msg => msg.read === false)?.filter(msg => msg.senderId !== id)
+
+		return unreadMessages?.length
 	}
 
 	return (
@@ -111,6 +121,7 @@ const ContactList = props => {
 								name={list?.user?.username}
 								message={list?.conversation?.lastMessage?.content}
 								onlineStatus={checkOnlineStatus(list?.user?.id)}
+								unread={getNumberOfUnreadMessages(list?.conversation?.id)}
 							/>
 						</div>
 					))
