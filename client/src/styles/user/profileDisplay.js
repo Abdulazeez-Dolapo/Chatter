@@ -21,6 +21,10 @@ const profileDisplay = theme => ({
 	message: {
 		color: theme.palette.secondary.main,
 		fontSize: "0.8rem",
+		textOverflow: 'ellipsis',
+    	width: "350px",
+    	whiteSpace: 'nowrap',
+    	overflow: 'hidden'
 	},
 	badgeContainer: {
 		display: "flex",
