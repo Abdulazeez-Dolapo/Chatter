@@ -12,6 +12,7 @@ const profileDisplay = theme => ({
 	},
 	textContainer: {
 		marginLeft: "1.5rem",
+		width: "100%"
 	},
 	name: {
 		textTransform: "lowercase",
@@ -21,6 +22,11 @@ const profileDisplay = theme => ({
 		color: theme.palette.secondary.main,
 		fontSize: "0.8rem",
 	},
+	badgeContainer: {
+		display: "flex",
+		justifyContent: "space-between",
+		width: "100%"
+	}
 })
 
 export default profileDisplay
