@@ -82,7 +82,18 @@ const ContactList = props => {
 		setSelectedUser({ username, id, conversationId })
 	}
 
-	const getNumberOfUnreadMessages = (msgConversationId) => {
+	const getLatestMessage = (lastMessage, conversationId) => {
+		const conversationMessages = messages[conversationId]
+		if(!conversationMessages) return lastMessage?.content
+
+		const latestMessageId = conversationMessages[conversationMessages?.length - 1]?.id
+		const message = conversationMessages.find(msg => msg.id === latestMessageId)
+		const latestMessage = lastMessage.id >= latestMessageId ? lastMessage?.content : message?.content
+
+		return latestMessage
+	}
+
+	const getNumberOfUnreadMessages = msgConversationId => {
 		if(!msgConversationId) return
 		if(conversationId === msgConversationId) return
 
@@ -119,7 +130,7 @@ const ContactList = props => {
 						>
 							<ProfileDisplay
 								name={list?.user?.username}
-								message={list?.conversation?.lastMessage?.content}
+								message={getLatestMessage(list?.conversation?.lastMessage, list?.conversation?.id)}
 								onlineStatus={checkOnlineStatus(list?.user?.id)}
 								unread={getNumberOfUnreadMessages(list?.conversation?.id)}
 							/>
