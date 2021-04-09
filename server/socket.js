@@ -49,7 +49,7 @@ const socketConnection = server => {
 			socket.on("join conversation", async (conversationId) => {
 				socket.join(conversationId)
 				const messages = await findAllMessages(conversationId, ["sender"])
-				socket.emit("messages", messages)
+				socket.emit("messages", messages.reverse())
 			})
 
 			// Handle a new message sent by a user 

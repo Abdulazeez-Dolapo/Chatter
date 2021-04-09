@@ -7,7 +7,7 @@ const saveMessage = async newMessageData => {
 const findAllMessages = async (
 	conversationId,
 	include = [],
-	order = [["createdAt", "ASC"]],
+	order = [["createdAt", "DESC"]],
 	limit = 100
 ) => {
 	return await Message.findAll({ where: { conversationId }, include, order, limit })
