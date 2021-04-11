@@ -1,3 +1,5 @@
 export const formatDate = date => {
-   return new Date(date).toString().split(' ')[4].slice(0, 5)
+   if(!date) return
+   
+   return new Date(date)?.toString()?.split(' ')[4]?.slice(0, 5)
 }

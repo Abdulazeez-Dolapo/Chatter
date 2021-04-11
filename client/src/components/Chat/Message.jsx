@@ -15,10 +15,10 @@ const useStyles = makeStyles(messageStyles)
 const Message = ({ message }) => {
 	const classes = useStyles()
 
-	const { createdAt, content, sender: { username, id }} = message
+	const { createdAt, content, sender } = message
 	const { user } = useContext(AuthContext)
 
-	const isSender = user.id === id
+	const isSender = user.id === sender?.id
 
 	return (
 		<Grid
@@ -34,7 +34,7 @@ const Message = ({ message }) => {
 				}}
 			>
 				<Typography className={classes.time}>
-					{username} {formatDate(createdAt)}
+					{sender?.username} {formatDate(createdAt)}
 				</Typography>
 			</Grid>
 
