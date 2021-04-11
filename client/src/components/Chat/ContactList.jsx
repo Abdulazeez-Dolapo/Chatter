@@ -28,6 +28,7 @@ const ContactList = props => {
 	const [searchValue, setSearchValue] = useState("")
 	const [chatListLoading, setChatListLoading] = useState(false)
 	const [chatList, setChatList] = useState([])
+	const [searchedChatList, setSearchedChatList] = useState([])
 	const [newMessage, setNewMessage] = useState({})
 	const [conversationMessages, setConversationMessages] = useState({})
 
@@ -51,6 +52,7 @@ const ContactList = props => {
 				const { conversations } = await fetchUserChatList()
 
 				setChatList(conversations)
+				setSearchedChatList(conversations)
 				setChatListLoading(false)
 			} catch (error) {
 				setChatListLoading(false)
@@ -72,6 +74,13 @@ const ContactList = props => {
 	const handleChange = e => {
 		const { value } = e.target
 		setSearchValue(value)
+
+		searchChatList(value)
+	}
+
+	const searchChatList = text => {
+		const searchedList = chatList.filter(chat => chat.user?.username.includes(text))
+		setSearchedChatList(searchedList)
 	}
 
 	const selectChat = conversation => {
@@ -95,6 +104,7 @@ const ContactList = props => {
 
 	const getNumberOfUnreadMessages = msgConversationId => {
 		if(!msgConversationId) return
+		// Check to make sure new message is not from the current conversation being carried it between users.
 		if(conversationId === msgConversationId) return
 
 		const conversationMessages = messages[msgConversationId]
@@ -121,8 +131,8 @@ const ContactList = props => {
 				{chatListLoading ? (
 					<CircularProgress />
 				) : (
-					chatList?.length > 0 &&
-					chatList.map(list => (
+					searchedChatList?.length > 0 &&
+					searchedChatList.map(list => (
 						<div
 							key={list.id}
 							className={classes.contactList}
