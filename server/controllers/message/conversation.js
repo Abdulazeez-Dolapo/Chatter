@@ -8,24 +8,22 @@ const {
 	findAllUsersInConversation,
 } = require("../../queries/participant")
 
-const validateRequestBody = body => {
-	const { receivers } = body
-
-	return receivers && receivers.length > 0
+const validateRequestBody = ({ participants }) => {
+	return participants && participants.length > 0
 }
 
-const addParticipantsToConversation = async (receivers, conversationId) => {
-	const participants = receivers.map(receiver => ({
-		userId: receiver,
+const addParticipantsToConversation = async (participants, conversationId) => {
+	const allParticipants = participants.map(participant => ({
+		userId: participant,
 		conversationId,
 	}))
 
-	return await saveParticipants(participants)
+	return await saveParticipants(allParticipants)
 }
 
 const createConversation = async (req, res, next) => {
 	try {
-		const errorMessage = "Please enter receivers"
+		const errorMessage = "Please enter participants"
 
 		// validate request body
 		const isRequestBodyValid = validateRequestBody(req.body)
@@ -34,7 +32,7 @@ const createConversation = async (req, res, next) => {
 		}
 
 		const conversation = await saveConversation({ lastMessageId: null })
-		await addParticipantsToConversation(req.body.receivers, conversation.id)
+		await addParticipantsToConversation(req.body.participants, conversation.id)
 
 		return res.status(201).json({
 			conversation,

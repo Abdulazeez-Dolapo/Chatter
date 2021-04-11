@@ -14,7 +14,7 @@ import TextInput from "../UtilityComponents/TextInput"
 import ProfileDisplay from "../User/ProfileDisplay"
 import Notification from "../UtilityComponents/Notification"
 
-import { fetchUserChatList } from "../../services/messages"
+import { fetchUserChatList, createConversation } from "../../services/messages"
 import { fetchUsers } from "../../services/users"
 import { useNotification } from '../../hooks/notification'
 import socket from "../../socket"
@@ -122,11 +122,27 @@ const ContactList = () => {
 		return usersFromDatabase.filter(user => !usersWithConversations[user?.id])
 	}
 
-	const startConversation = user => {
-		console.log(user)
+	const startConversation = async user => {
+		try {
+			const { id } = user
+			const { conversation } = await createConversation({ participants: [id] })
+			const chat = { 
+				user,
+				conversation,
+				userId: id,
+				conversationId: conversation.id,
+			}
+			setChatList([chat, ...chatList])
+			selectChat(chat)
+		} catch (error) {
+			const errMessage = "An error occurred. Please try again."
+			setMessage(errMessage)
+			setOpen(true)
+		}
 	}
 
 	const selectChat = conversation => {
+		console.log(conversation)
 		const { conversationId, user: { username, id }} = conversation
 
 		history.push(`/chat?cid=${conversationId}`)
@@ -136,11 +152,11 @@ const ContactList = () => {
 
 	const getLatestMessage = (lastMessage, conversationId) => {
 		const conversationMessages = messages[conversationId]
-		if(!conversationMessages) return lastMessage?.content
+		if (!conversationMessages) return lastMessage?.content
 
 		const latestMessageId = conversationMessages[conversationMessages?.length - 1]?.id
 		const message = conversationMessages.find(msg => msg.id === latestMessageId)
-		const latestMessage = lastMessage.id >= latestMessageId ? lastMessage?.content : message?.content
+		const latestMessage = lastMessage?.id >= latestMessageId ? lastMessage?.content : message?.content
 
 		return latestMessage
 	}
