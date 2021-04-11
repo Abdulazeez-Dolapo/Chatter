@@ -5,13 +5,13 @@ const { searchUser, findAllUsers } = require("../../queries/user")
 
 const searchForUser = async (req, res, next) => {
 	try {
-		const searchParams = req.body.searchParams
+		const { username } = req.query
       let users
 
-      if(!searchParams) {
+      if(!username) {
          users = await findAllUsers()
       } else {
-         users = await searchUser(searchParams)
+         users = await searchUser(username)
       }
 
 		return res.status(200).json({
