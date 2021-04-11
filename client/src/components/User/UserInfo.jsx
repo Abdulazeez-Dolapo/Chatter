@@ -8,20 +8,18 @@ import userInfoStyles from "../../styles/chat/userInfo"
 const useStyles = makeStyles(userInfoStyles)
 
 const UserInfo = props => {
-	const { name = "Santiago", onlineStatus = true } = props
+	const { username, onlineStatus } = props
 	const classes = useStyles()
 
 	return (
 		<div className={classes.root}>
-			<Typography className={classes.name}>{name}</Typography>
+			<Typography className={classes.name}>{username}</Typography>
 
-			{onlineStatus && (
-				<Fragment>
-					<div className={classes.circle}></div>
+			<Fragment>
+				<div className={onlineStatus ? classes.onlineCircle : classes.offlineCircle}></div>
 
-					<Typography className={classes.online}>Online</Typography>
-				</Fragment>
-			)}
+				<Typography className={classes.online}>{onlineStatus ? "Online" : "Offline"}</Typography>
+			</Fragment>
 		</div>
 	)
 }

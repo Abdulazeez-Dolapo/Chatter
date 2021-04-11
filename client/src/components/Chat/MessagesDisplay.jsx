@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useContext, useEffect, useRef } from "react"
 
 import { makeStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
@@ -6,57 +6,40 @@ import Grid from "@material-ui/core/Grid"
 import messagesDisplayStyles from "../../styles/chat/messagesDisplay"
 import Message from "./Message"
 
+import MessageContext from '../../context/MessageContext'
+import AuthContext from '../../context/AuthContext'
+
 const useStyles = makeStyles(messagesDisplayStyles)
 
 const MessagesDisplay = () => {
 	const classes = useStyles()
+	const messageDisplay = useRef(null)
 
-	const [messages, setMessages] = useState([])
+	const { messages, selectedUser: { conversationId } } = useContext(MessageContext)
+	const { user } = useContext(AuthContext)
+
+	const conversations = messages[conversationId]
+
+	const scrollToBottom = () => {
+		const messageContainer = messageDisplay.current
+		messageContainer.scrollTo({ top: messageContainer.scrollHeight, behavior: "smooth" })
+	}
 
 	useEffect(() => {
-		setMessages([
-			{ time: "10:45", sender: true, text: "Hi there" },
-			{ time: "10:45", sender: true, text: "Hi there" },
-			{
-				time: "10:45",
-				sender: false,
-				text:
-					"Hi there Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. ",
-			},
-			{ time: "10:45", sender: true, text: "Hi there" },
-			{ time: "10:45", sender: false, text: "Hi there" },
-			{ time: "10:45", sender: false, text: "Hi there" },
-			{ time: "10:45", sender: true, text: "Hi there" },
-			{ time: "10:45", sender: false, text: "Hi there" },
-			{
-				time: "10:45",
-				sender: true,
-				text:
-					"Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. ",
-			},
-			{ time: "10:45", sender: false, text: "Hi there" },
-			{ time: "10:45", sender: true, text: "Hi there" },
-			{ time: "10:45", sender: false, text: "Hi there" },
-			{ time: "10:45", sender: true, text: "Hi there" },
-			{ time: "10:45", sender: false, text: "Hi there" },
-		])
-	}, [])
+		scrollToBottom()
+	}, [conversations])
 
 	return (
-		<div className={classes.root}>
-			{messages?.length > 0
-				? messages.map((message, index) => (
+		<div className={classes.root} ref={messageDisplay}>
+			{conversations?.length > 0
+				? conversations.map((message, index) => (
 						<Grid
 							key={index}
 							className={
-								message.sender ? classes.senderRow : classes.receiverRow
+								message.senderId === user.id ? classes.senderRow : classes.receiverRow
 							}
 						>
-							<Message
-								time={message.time}
-								text={message.text}
-								sender={message.sender}
-							/>
+							<Message message={message} />
 						</Grid>
 				  ))
 				: ""}

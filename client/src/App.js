@@ -10,6 +10,7 @@ import Chat from "./pages/Chat"
 import ProtectedRoute from "./components/UtilityComponents/ProtectedRoute.jsx"
 
 import { AuthProvider } from "./context/AuthContext"
+import { MessageProvider } from "./context/MessageContext"
 
 function App() {
 	return (
@@ -21,7 +22,9 @@ function App() {
 					<Route exact path="/signup" component={Signup} />
 
 					<ProtectedRoute exact path="/chat">
-						<Chat />
+						<MessageProvider>
+							<Chat />
+						</MessageProvider>
 					</ProtectedRoute>
 				</BrowserRouter>
 			</MuiThemeProvider>

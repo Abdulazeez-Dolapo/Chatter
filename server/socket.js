@@ -1,4 +1,5 @@
 const { verifyToken } = require("./utils/token")
+const { findAllMessages, saveMessage } = require('./queries/message')
 
 const socketConnection = server => {
 	const io = require("socket.io")(server, {
@@ -22,6 +23,7 @@ const socketConnection = server => {
 			if (!decoded) return next(new Error("Authentication error"))
 
 			socket.userId = decoded.id
+			socket.username = decoded.username
 
 			next()
 		} catch (error) {
@@ -29,7 +31,8 @@ const socketConnection = server => {
 		}
 	}).on("connection", async socket => {
 		try {
-			console.log(socket.userId, "connected")
+			console.log(socket.username, "connected")
+			const { username, userId } = socket
 
 			// Find and emit all connected (online) users
 			const users = []
@@ -39,16 +42,27 @@ const socketConnection = server => {
 
 			socket.emit("users", users)
 
-			// notify existing users when a user connects
-			socket.broadcast.emit("user connected", {
-				userId: socket.userId,
+			// Notify existing users when a user connects
+			socket.broadcast.emit("user connected", { userId })
+
+			// Join a conversation, fetch all messages in said conversation and send it on
+			socket.on("join conversation", async (conversationId) => {
+				socket.join(conversationId)
+				const messages = await findAllMessages(conversationId, ["sender"])
+				socket.emit("messages", messages.reverse())
+			})
+
+			// Handle a new message sent by a user 
+			socket.on('send message', async messageBody => {
+				const { content, conversationId } = messageBody
+				const message = await saveMessage({ content, conversationId, senderId: userId})
+				const newMessage = { ...message.dataValues, sender: { id: userId, username }}
+				io.to(conversationId).emit("message", newMessage)
 			})
 
 			socket.on("disconnect", () => {
-				// notify existing users when a user disconnects
-				socket.broadcast.emit("user disconnected", {
-					userId: socket.userId,
-				})
+				// Notify existing users when a user disconnects
+				socket.broadcast.emit("user disconnected", { userId })
 			})
 		} catch (error) {
 			console.log(error)

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useHistory } from "react-router-dom"
 
 import Typography from "@material-ui/core/Typography"
@@ -12,6 +12,9 @@ import TextInput from "../UtilityComponents/TextInput"
 import ProfileDisplay from "../User/ProfileDisplay"
 
 import { fetchUserChatList } from "../../services/messages"
+import socket from "../../socket"
+import MessageContext from '../../context/MessageContext'
+import AuthContext from '../../context/AuthContext'
 
 const useStyles = makeStyles(contactListStyles)
 
@@ -19,11 +22,27 @@ const ContactList = props => {
 	const classes = useStyles()
 	const history = useHistory()
 
-	const { onlineUsers } = props
+	const { setSelectedUser, selectedUser: { conversationId }, checkOnlineStatus, messages, setMessages } = useContext(MessageContext)
+	const { user: { id }} = useContext(AuthContext)
 
 	const [searchValue, setSearchValue] = useState("")
 	const [chatListLoading, setChatListLoading] = useState(false)
 	const [chatList, setChatList] = useState([])
+	const [newMessage, setNewMessage] = useState({})
+	const [conversationMessages, setConversationMessages] = useState({})
+
+	useEffect(() => {
+		setMessages({...messages, [conversationId]: conversationMessages })
+	}, [conversationMessages])
+
+	useEffect(() => {
+		let allConversationMessages = []
+		if(messages[newMessage.conversationId]) {
+			allConversationMessages = [...messages[newMessage.conversationId], {...newMessage, read: newMessage.conversationId === conversationId }]
+		}
+
+		setMessages({...messages, [newMessage.conversationId]: allConversationMessages })
+	}, [newMessage])
 
 	useEffect(() => {
 		const getChatList = async () => {
@@ -40,6 +59,14 @@ const ContactList = props => {
 		}
 
 		getChatList()
+
+		socket.on("messages", messages => {
+			setConversationMessages(messages)
+		})
+
+		socket.on("message", (newMessageBody) => {
+			setNewMessage(newMessageBody)
+		})
 	}, [])
 
 	const handleChange = e => {
@@ -47,12 +74,33 @@ const ContactList = props => {
 		setSearchValue(value)
 	}
 
-	const selectChat = conversationId => {
+	const selectChat = conversation => {
+		const { conversationId, user: { username, id }} = conversation
+
 		history.push(`/chat?cid=${conversationId}`)
+		socket.emit("join conversation", conversationId)
+		setSelectedUser({ username, id, conversationId })
 	}
 
-	const checkOnlineStatus = userId => {
-		return onlineUsers.find(user => user.userId === userId)
+	const getLatestMessage = (lastMessage, conversationId) => {
+		const conversationMessages = messages[conversationId]
+		if(!conversationMessages) return lastMessage?.content
+
+		const latestMessageId = conversationMessages[conversationMessages?.length - 1]?.id
+		const message = conversationMessages.find(msg => msg.id === latestMessageId)
+		const latestMessage = lastMessage.id >= latestMessageId ? lastMessage?.content : message?.content
+
+		return latestMessage
+	}
+
+	const getNumberOfUnreadMessages = msgConversationId => {
+		if(!msgConversationId) return
+		if(conversationId === msgConversationId) return
+
+		const conversationMessages = messages[msgConversationId]
+		const unreadMessages = conversationMessages?.filter(msg => msg.read === false)?.filter(msg => msg.senderId !== id)
+
+		return unreadMessages?.length
 	}
 
 	return (
@@ -78,12 +126,13 @@ const ContactList = props => {
 						<div
 							key={list.id}
 							className={classes.contactList}
-							onClick={() => selectChat(list.conversationId)}
+							onClick={() => selectChat(list)}
 						>
 							<ProfileDisplay
 								name={list?.user?.username}
-								message={list?.conversation?.lastMessage?.content}
+								message={getLatestMessage(list?.conversation?.lastMessage, list?.conversation?.id)}
 								onlineStatus={checkOnlineStatus(list?.user?.id)}
+								unread={getNumberOfUnreadMessages(list?.conversation?.id)}
 							/>
 						</div>
 					))

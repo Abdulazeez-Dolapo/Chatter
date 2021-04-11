@@ -20,6 +20,7 @@ const ProfileDisplay = props => {
 		name,
 		onlineStatus,
 		message,
+		unread
 	} = props
 
 	return (
@@ -43,7 +44,11 @@ const ProfileDisplay = props => {
 			<div className={classes.textContainer}>
 				{name && <Typography className={classes.name}>{name}</Typography>}
 				{message && (
-					<Typography className={classes.message}>{message}</Typography>
+					<div className={classes.badgeContainer}>
+						<Typography className={classes.message}>{message}</Typography>
+
+						{unread > 0 && <Badge badgeContent={unread} color="primary" showZero={false} max={9} />}
+					</div>
 				)}
 			</div>
 		</div>

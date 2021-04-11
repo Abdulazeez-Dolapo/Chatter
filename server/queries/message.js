@@ -7,9 +7,10 @@ const saveMessage = async newMessageData => {
 const findAllMessages = async (
 	conversationId,
 	include = [],
-	order = [["createdAt", "DESC"]]
+	order = [["createdAt", "DESC"]],
+	limit = 100
 ) => {
-	return await Message.findAll({ where: { conversationId }, include, order })
+	return await Message.findAll({ where: { conversationId }, include, order, limit })
 }
 
 module.exports = { saveMessage, findAllMessages }
