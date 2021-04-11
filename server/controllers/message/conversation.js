@@ -32,7 +32,10 @@ const createConversation = async (req, res, next) => {
 		}
 
 		const conversation = await saveConversation({ lastMessageId: null })
-		await addParticipantsToConversation(req.body.participants, conversation.id)
+		await addParticipantsToConversation(
+			req.body.participants,
+			conversation.id
+		)
 
 		return res.status(201).json({
 			conversation,

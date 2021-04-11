@@ -10,7 +10,12 @@ const findAllMessages = async (
 	order = [["createdAt", "DESC"]],
 	limit = 100
 ) => {
-	return await Message.findAll({ where: { conversationId }, include, order, limit })
+	return await Message.findAll({
+		where: { conversationId },
+		include,
+		order,
+		limit,
+	})
 }
 
 module.exports = { saveMessage, findAllMessages }

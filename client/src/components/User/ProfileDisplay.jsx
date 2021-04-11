@@ -20,7 +20,7 @@ const ProfileDisplay = props => {
 		name,
 		onlineStatus,
 		message,
-		unread
+		unread,
 	} = props
 
 	return (
@@ -47,7 +47,14 @@ const ProfileDisplay = props => {
 					<div className={classes.badgeContainer}>
 						<Typography className={classes.message}>{message}</Typography>
 
-						{unread > 0 && <Badge badgeContent={unread} color="primary" showZero={false} max={9} />}
+						{unread > 0 && (
+							<Badge
+								badgeContent={unread}
+								color="primary"
+								showZero={false}
+								max={9}
+							/>
+						)}
 					</div>
 				)}
 			</div>

@@ -16,9 +16,15 @@ const UserInfo = props => {
 			<Typography className={classes.name}>{username}</Typography>
 
 			<Fragment>
-				<div className={onlineStatus ? classes.onlineCircle : classes.offlineCircle}></div>
+				<div
+					className={
+						onlineStatus ? classes.onlineCircle : classes.offlineCircle
+					}
+				></div>
 
-				<Typography className={classes.online}>{onlineStatus ? "Online" : "Offline"}</Typography>
+				<Typography className={classes.online}>
+					{onlineStatus ? "Online" : "Offline"}
+				</Typography>
 			</Fragment>
 		</div>
 	)

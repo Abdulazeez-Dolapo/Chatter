@@ -8,15 +8,18 @@ import TextInput from "../UtilityComponents/TextInput"
 import MessagesDisplay from "./MessagesDisplay"
 
 import chatAreaStyles from "../../styles/chat/chatArea"
-import MessageContext from '../../context/MessageContext'
+import MessageContext from "../../context/MessageContext"
 
-import socket from '../../socket'
+import socket from "../../socket"
 
 const useStyles = makeStyles(chatAreaStyles)
 
 const ChatArea = () => {
 	const classes = useStyles()
-	const { selectedUser: { username, id, conversationId }, checkOnlineStatus } = useContext(MessageContext)
+	const {
+		selectedUser: { username, id, conversationId },
+		checkOnlineStatus,
+	} = useContext(MessageContext)
 
 	const [message, setMessage] = useState("")
 
@@ -26,10 +29,10 @@ const ChatArea = () => {
 	}
 
 	const handleKeyPress = e => {
-		if (e.key === 'Enter' && !e.shiftKey) {
+		if (e.key === "Enter" && !e.shiftKey) {
 			e.preventDefault()
 			sendMessage(message)
-			setMessage('')
+			setMessage("")
 		}
 	}
 
