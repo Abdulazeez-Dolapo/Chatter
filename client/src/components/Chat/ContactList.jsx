@@ -12,18 +12,22 @@ import contactListStyles from "../../styles/chat/contactList"
 
 import TextInput from "../UtilityComponents/TextInput"
 import ProfileDisplay from "../User/ProfileDisplay"
+import Notification from "../UtilityComponents/Notification"
 
 import { fetchUserChatList } from "../../services/messages"
 import { fetchUsers } from "../../services/users"
+import { useNotification } from '../../hooks/notification'
 import socket from "../../socket"
+
 import MessageContext from '../../context/MessageContext'
 import AuthContext from '../../context/AuthContext'
 
 const useStyles = makeStyles(contactListStyles)
 
-const ContactList = props => {
+const ContactList = () => {
 	const classes = useStyles()
 	const history = useHistory()
+	const { open, handleClose, message, setMessage, setOpen } = useNotification()
 
 	const { setSelectedUser, selectedUser: { conversationId }, checkOnlineStatus, messages, setMessages } = useContext(MessageContext)
 	const { user: { id }} = useContext(AuthContext)
@@ -91,6 +95,7 @@ const ContactList = props => {
 	const searchUsersFromDatabase = async () => {
 		try {
 			setChatListLoading(true)
+
 			const { users } = await fetchUsers(searchValue)
 
 			// Remove users that already have a running conversation with the logged in user.
@@ -99,8 +104,10 @@ const ContactList = props => {
 			setStartNewConversation(true)
 			setChatListLoading(false)
 		} catch (error) {
+			const errMessage = "An error occurred. Please try again."
+			setMessage(errMessage)
+			setOpen(true)
 			setChatListLoading(false)
-			console.log(error.response)
 		}
 	}
 
@@ -115,7 +122,9 @@ const ContactList = props => {
 		return usersFromDatabase.filter(user => !usersWithConversations[user?.id])
 	}
 
-	const startConversation = user => {}
+	const startConversation = user => {
+		console.log(user)
+	}
 
 	const selectChat = conversation => {
 		const { conversationId, user: { username, id }} = conversation
@@ -217,6 +226,12 @@ const ContactList = props => {
 						)) : <Typography>No contacts found. Press enter on the search bar to search for new users from the database.</Typography>
 				)}
 			</Grid>
+			
+			<Notification
+				open={open}
+				message={message}
+				handleClose={handleClose}
+			/>
 		</div>
 	)
 }
