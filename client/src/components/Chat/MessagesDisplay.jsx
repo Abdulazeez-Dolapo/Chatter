@@ -6,8 +6,8 @@ import Grid from "@material-ui/core/Grid"
 import messagesDisplayStyles from "../../styles/chat/messagesDisplay"
 import Message from "./Message"
 
-import MessageContext from '../../context/MessageContext'
-import AuthContext from '../../context/AuthContext'
+import MessageContext from "../../context/MessageContext"
+import AuthContext from "../../context/AuthContext"
 
 const useStyles = makeStyles(messagesDisplayStyles)
 
@@ -15,14 +15,20 @@ const MessagesDisplay = () => {
 	const classes = useStyles()
 	const messageDisplay = useRef(null)
 
-	const { messages, selectedUser: { conversationId } } = useContext(MessageContext)
+	const {
+		messages,
+		selectedUser: { conversationId },
+	} = useContext(MessageContext)
 	const { user } = useContext(AuthContext)
 
 	const conversations = messages[conversationId]
 
 	const scrollToBottom = () => {
 		const messageContainer = messageDisplay.current
-		messageContainer.scrollTo({ top: messageContainer.scrollHeight, behavior: "smooth" })
+		messageContainer.scrollTo({
+			top: messageContainer.scrollHeight,
+			behavior: "smooth",
+		})
 	}
 
 	useEffect(() => {
@@ -36,7 +42,9 @@ const MessagesDisplay = () => {
 						<Grid
 							key={index}
 							className={
-								message.senderId === user.id ? classes.senderRow : classes.receiverRow
+								message.senderId === user.id
+									? classes.senderRow
+									: classes.receiverRow
 							}
 						>
 							<Message message={message} />

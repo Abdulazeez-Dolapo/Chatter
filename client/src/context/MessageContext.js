@@ -13,7 +13,15 @@ export const MessageProvider = ({ children }) => {
 
 	return (
 		<MessageContext.Provider
-			value={{ messages, setMessages, selectedUser, setSelectedUser, onlineUsers, setOnlineUsers, checkOnlineStatus }}
+			value={{
+				messages,
+				setMessages,
+				selectedUser,
+				setSelectedUser,
+				onlineUsers,
+				setOnlineUsers,
+				checkOnlineStatus,
+			}}
 		>
 			{children}
 		</MessageContext.Provider>

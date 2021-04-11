@@ -3,7 +3,7 @@ const message = theme => ({
 		display: "flex",
 		flexWrap: "wrap",
 		maxWidth: "60%",
-		paddingBottom: "1rem"
+		paddingBottom: "1rem",
 	},
 	time: {
 		color: theme.palette.secondary.main,

@@ -5,6 +5,6 @@ const { searchForUser } = require("../controllers/user")
 
 const userRouter = express.Router()
 
-userRouter.post("/users/search", authenticate, searchForUser)
+userRouter.get("/users/search", authenticate, searchForUser)
 
 module.exports = userRouter

@@ -11,7 +11,15 @@ const useStyles = makeStyles(textInputStyles)
 const TextInput = props => {
 	const classes = useStyles()
 
-	const { onChange, value, placeholder, icon, multiline, rows, handleKeyPress } = props
+	const {
+		onChange,
+		value,
+		placeholder,
+		icon,
+		multiline,
+		rows,
+		handleKeyPress,
+	} = props
 
 	return (
 		<TextField

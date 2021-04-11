@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext } from "react"
 
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
@@ -6,19 +6,19 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import messageStyles from "../../styles/chat/message"
 
-import AuthContext from '../../context/AuthContext'
+import AuthContext from "../../context/AuthContext"
 
-import { formatDate } from '../../utils/helpers'
+import { formatDate } from "../../utils/helpers"
 
 const useStyles = makeStyles(messageStyles)
 
 const Message = ({ message }) => {
 	const classes = useStyles()
 
-	const { createdAt, content, sender: { username, id }} = message
+	const { createdAt, content, sender } = message
 	const { user } = useContext(AuthContext)
 
-	const isSender = user.id === id
+	const isSender = user.id === sender?.id
 
 	return (
 		<Grid
@@ -34,7 +34,7 @@ const Message = ({ message }) => {
 				}}
 			>
 				<Typography className={classes.time}>
-					{username} {formatDate(createdAt)}
+					{sender?.username} {formatDate(createdAt)}
 				</Typography>
 			</Grid>
 

@@ -11,6 +11,18 @@ const contactList = theme => ({
 			fontWeight: "bold",
 		},
 	},
+	chatHeader: {
+		width: "100%",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "space-between",
+	},
+	loader: {
+		width: "100%",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+	},
 	contactList: {
 		padding: "1rem",
 		"&:hover": {
