@@ -72,7 +72,9 @@ const ContactList = () => {
 			...messages,
 			[newMessage?.conversationId]: allConversationMessages,
 		})
-		moveCurrentConversationToTop()
+
+		const index = getIndexOfConversation(newMessage?.conversationId)
+		moveCurrentConversationToTop(index)
 	}, [newMessage])
 
 	useEffect(() => {
@@ -101,11 +103,21 @@ const ContactList = () => {
 		})
 	}, [])
 
-	const moveCurrentConversationToTop = () => {
+	const getIndexOfConversation = conversationId => {
+		return searchedChatList?.findIndex(
+			list => list?.conversationId === conversationId
+		)
+	}
+
+	const moveCurrentConversationToTop = index => {
+		if (index < 0) return
 		if (typeof currentConversationIndex !== "number") return
 
 		const conversations = [...chatList]
-		const conversation = conversations.splice(currentConversationIndex, 1)[0]
+		const conversation = conversations.splice(
+			index ?? currentConversationIndex,
+			1
+		)[0]
 		setSearchedChatList([conversation, ...conversations])
 		setChatList([conversation, ...conversations])
 		setCurrentConversationIndex(0)
