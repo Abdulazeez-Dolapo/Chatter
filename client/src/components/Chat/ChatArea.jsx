@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import UserInfo from "../User/UserInfo"
 import TextInput from "../UtilityComponents/TextInput"
 import MessagesDisplay from "./MessagesDisplay"
+import NoConversation from "../UtilityComponents/NoConversation"
 
 import chatAreaStyles from "../../styles/chat/chatArea"
 import MessageContext from "../../context/MessageContext"
@@ -41,7 +42,7 @@ const ChatArea = () => {
 		socket.emit("send message", body)
 	}
 
-	return (
+	return conversationId ? (
 		<div className={classes.root}>
 			<UserInfo username={username} onlineStatus={checkOnlineStatus(id)} />
 
@@ -57,6 +58,13 @@ const ChatArea = () => {
 					handleKeyPress={handleKeyPress}
 				/>
 			</Grid>
+		</div>
+	) : (
+		<div style={{ height: "50%" }}>
+			<NoConversation
+				message="No Chat selected. Select one from the list of Chats"
+				imageLink="notification.svg"
+			/>
 		</div>
 	)
 }
