@@ -6,10 +6,12 @@ import { makeStyles } from "@material-ui/core/styles"
 import ProfileDisplay from "../components/User/ProfileDisplay"
 import ContactList from "../components/Chat/ContactList"
 import ChatArea from "../components/Chat/ChatArea"
+import Notification from "../components/UtilityComponents/Notification"
 
 import AuthContext from "../context/AuthContext"
 import MessageContext from "../context/MessageContext"
 import socket from "../socket"
+import { useNotification } from "../hooks/notification"
 
 import chatPageStyles from "../styles/chat/chatPage"
 
@@ -17,6 +19,8 @@ const useStyles = makeStyles(chatPageStyles)
 
 const Chat = () => {
 	const classes = useStyles()
+	const { open, handleClose, message, setMessage, setOpen } = useNotification()
+
 	const { user } = useContext(AuthContext)
 	const { onlineUsers, setOnlineUsers } = useContext(MessageContext)
 
@@ -33,6 +37,8 @@ const Chat = () => {
 
 		socket.on("user connected", user => {
 			setOnlineUsers([...onlineUsers, user])
+			setMessage(`${user.username} is online`)
+			setOpen(true)
 		})
 
 		socket.on("user disconnected", user => {
@@ -40,6 +46,8 @@ const Chat = () => {
 				onlineUser => onlineUser.userId !== user.userId
 			)
 			setOnlineUsers(newOnlineUsers)
+			setMessage(`${user.username} has gone offline`)
+			setOpen(true)
 		})
 
 		return () => {
@@ -61,6 +69,12 @@ const Chat = () => {
 			<Grid item xs={12} sm={8} className={classes.chatArea}>
 				<ChatArea />
 			</Grid>
+
+			<Notification
+				open={open}
+				message={message}
+				handleClose={handleClose}
+			/>
 		</Grid>
 	)
 }
