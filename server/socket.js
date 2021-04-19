@@ -43,7 +43,7 @@ const socketConnection = server => {
 			socket.emit("users", users)
 
 			// Notify existing users when a user connects
-			socket.broadcast.emit("user connected", { userId })
+			socket.broadcast.emit("user connected", { userId, username })
 
 			// Join a conversation, fetch all messages in said conversation and send it on
 			socket.on("join conversation", async conversationId => {
@@ -69,7 +69,7 @@ const socketConnection = server => {
 
 			socket.on("disconnect", () => {
 				// Notify existing users when a user disconnects
-				socket.broadcast.emit("user disconnected", { userId })
+				socket.broadcast.emit("user disconnected", { userId, username })
 			})
 		} catch (error) {
 			console.log(error)
