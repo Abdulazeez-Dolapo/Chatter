@@ -20,8 +20,9 @@ yarn-debug.log*
 yarn-error.log*
 
 
-#TODO add .env to your gitignore
+# project notes and assets
 Hatchways Project Assessment - Messenger V2.pdf
 assets 2.zip
 assets 2
 code.js
+notes.txt

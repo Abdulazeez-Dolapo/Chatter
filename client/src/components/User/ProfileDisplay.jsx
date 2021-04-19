@@ -1,4 +1,4 @@
-import { Typography, Badge } from "@material-ui/core"
+import { Typography, Badge, Box } from "@material-ui/core"
 import { makeStyles, withStyles } from "@material-ui/core/styles"
 
 import ProfileDisplayStyles from "../../styles/user/profileDisplay"
@@ -45,7 +45,11 @@ const ProfileDisplay = props => {
 				{name && <Typography className={classes.name}>{name}</Typography>}
 				{message && (
 					<div className={classes.badgeContainer}>
-						<Typography className={classes.message}>{message}</Typography>
+						<Typography className={classes.message}>
+							{message?.length > 26
+								? `${message.slice(0, 26)}...`
+								: message}
+						</Typography>
 
 						{unread > 0 && (
 							<Badge
