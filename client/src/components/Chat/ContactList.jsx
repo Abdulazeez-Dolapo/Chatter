@@ -108,6 +108,7 @@ const ContactList = () => {
 		const conversation = conversations.splice(currentConversationIndex, 1)[0]
 		setSearchedChatList([conversation, ...conversations])
 		setChatList([conversation, ...conversations])
+		setCurrentConversationIndex(0)
 	}
 
 	const handleChange = e => {
