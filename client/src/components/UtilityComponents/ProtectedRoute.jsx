@@ -11,18 +11,32 @@ import protectedRouteStyles from "../../styles/protectedRoute"
 
 const useStyles = makeStyles(protectedRouteStyles)
 
-const ProtectedRoute = ({ children, path }) => {
+const ProtectedRoute = ({ children, path, authPage }) => {
 	const classes = useStyles()
 	const { isLoggedIn, loading } = useContext(AuthContext)
+
+	const displayUI = () => {
+		if (authPage) {
+			return isLoggedIn ? (
+				<Redirect to="/chat" />
+			) : (
+				<Route path={path}>{children}</Route>
+			)
+		}
+
+		return isLoggedIn ? (
+			<Route path={path}>{children}</Route>
+		) : (
+			<Redirect to="/login" />
+		)
+	}
 
 	return loading ? (
 		<Grid className={classes.root}>
 			<CircularProgress size={100} color="primary" />
 		</Grid>
-	) : isLoggedIn ? (
-		<Route path={path}>{children}</Route>
 	) : (
-		<Redirect to="/login" />
+		displayUI()
 	)
 }
 
