@@ -7,6 +7,7 @@ import ProfileDisplay from "../components/User/ProfileDisplay"
 import ContactList from "../components/Chat/ContactList"
 import ChatArea from "../components/Chat/ChatArea"
 import Notification from "../components/UtilityComponents/Notification"
+import AppLayout from "../components/Layout/AppLayout"
 
 import AuthContext from "../context/AuthContext"
 import MessageContext from "../context/MessageContext"
@@ -57,25 +58,27 @@ const Chat = () => {
 	}, [])
 
 	return (
-		<Grid container className={classes.root}>
-			<Grid item xs={12} sm={4}>
-				<Grid className={classes.profile}>
-					<ProfileDisplay name={user?.username} onlineStatus={true} />
+		<AppLayout>
+			<Grid container className={classes.root}>
+				<Grid item xs={12} sm={4}>
+					<Grid className={classes.profile}>
+						<ProfileDisplay name={user?.username} onlineStatus={true} />
+					</Grid>
+
+					<ContactList />
 				</Grid>
 
-				<ContactList />
-			</Grid>
+				<Grid item xs={12} sm={8} className={classes.chatArea}>
+					<ChatArea />
+				</Grid>
 
-			<Grid item xs={12} sm={8} className={classes.chatArea}>
-				<ChatArea />
+				<Notification
+					open={open}
+					message={message}
+					handleClose={handleClose}
+				/>
 			</Grid>
-
-			<Notification
-				open={open}
-				message={message}
-				handleClose={handleClose}
-			/>
-		</Grid>
+		</AppLayout>
 	)
 }
 

@@ -60,9 +60,9 @@ const ChatArea = () => {
 			</Grid>
 		</div>
 	) : (
-		<div style={{ height: "50%" }}>
+		<div style={{ height: "30%" }}>
 			<NoConversation
-				message="No Chat selected. Select one from the list of Chats"
+				message="No Chat selected. Select one from the list of Chats or use the search bar to search for other users."
 				imageLink="notification.svg"
 			/>
 		</div>
