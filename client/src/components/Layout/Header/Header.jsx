@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -11,10 +11,12 @@ import Button from '@material-ui/core/Button'
 import Hidden from '@material-ui/core/Hidden'
 import MenuIcon from '@material-ui/icons/Menu'
 
-import headerStyles from '../../../styles/layout/header'
 import NavigationDrawer from './NavigationDrawer'
 
 import { logout } from '../../../services/auth'
+import AuthContext from '../../../context/AuthContext'
+
+import headerStyles from '../../../styles/layout/header'
 
 const useStyles = makeStyles(headerStyles)
 
@@ -22,26 +24,10 @@ const Header = () => {
   const classes = useStyles()
   const history = useHistory()
 
-  const [open, setOpen] = useState(false)
+  const { isLoggedIn } = useContext(AuthContext)
 
-  const navLinks = [
-    {
-      name: 'Login',
-      route: 'login',
-    },
-    {
-      name: 'Signup',
-      route: 'signup',
-    },
-    {
-      name: 'Chat',
-      route: 'chat',
-    },
-    {
-      name: 'Logout',
-      route: 'logout',
-    },
-  ]
+  const [open, setOpen] = useState(false)
+  const [navLinks, setNavLinks] = useState([])
 
   const goToPage = route => {
     if(route === "logout") return logout()
@@ -49,6 +35,35 @@ const Header = () => {
     history.push(`/${route}`)
   }
 
+  useEffect(() => {
+    let navLinks = []
+
+    if(isLoggedIn) {
+      navLinks = [
+        {
+          name: 'Chat',
+          route: 'chat',
+        },
+        {
+          name: 'Logout',
+          route: 'logout',
+        },
+      ]
+    } else {
+      navLinks = [
+        {
+          name: 'Login',
+          route: 'login',
+        },
+        {
+          name: 'Signup',
+          route: 'signup',
+        },
+      ]
+    }
+
+    setNavLinks(navLinks)
+  }, [])
 
   return (
     <div className={classes.root}>
