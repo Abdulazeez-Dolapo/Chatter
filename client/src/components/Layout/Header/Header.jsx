@@ -24,15 +24,24 @@ const Header = () => {
   const classes = useStyles()
   const history = useHistory()
 
-  const { isLoggedIn } = useContext(AuthContext)
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext)
 
   const [open, setOpen] = useState(false)
   const [navLinks, setNavLinks] = useState([])
 
   const goToPage = route => {
-    if(route === "logout") return logout()
+    if(route === "logout") return userLogout()
 
     history.push(`/${route}`)
+  }
+
+  const userLogout = async () => {
+    try {
+      await logout
+      setIsLoggedIn(false)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
