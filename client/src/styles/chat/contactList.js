@@ -30,12 +30,19 @@ const contactList = theme => ({
 		"&:hover": {
 			cursor: "pointer",
 		},
+		[theme.breakpoints.only("xs")]: {
+			padding: "0.5rem",
+			paddingLeft: 0,
+		}
 	},
 	noBorder: {
 		border: "none",
 	},
 	heading: {
 		fontSize: "1.7rem",
+		[theme.breakpoints.only("xs")]: {
+			fontSize: "1.2rem",
+		}
 	},
 	usersList: {
 		height: "86%",

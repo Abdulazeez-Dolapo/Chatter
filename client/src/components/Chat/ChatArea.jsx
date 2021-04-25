@@ -15,8 +15,10 @@ import socket from "../../socket"
 
 const useStyles = makeStyles(chatAreaStyles)
 
-const ChatArea = () => {
+const ChatArea = props => {
 	const classes = useStyles()
+	const { showChatArea, isMobile } = props
+
 	const {
 		selectedUser: { username, id, conversationId },
 		checkOnlineStatus,
@@ -42,10 +44,50 @@ const ChatArea = () => {
 		socket.emit("send message", body)
 	}
 
-	return conversationId ? (
+	return isMobile ? (
+		showChatArea ? (
+			conversationId ? (
+				<div className={classes.root}>
+					<div className={classes.userInfo}>
+						<UserInfo
+							username={username}
+							onlineStatus={checkOnlineStatus(id)}
+						/>
+					</div>
+
+					<div className={classes.messageDisplay}>
+						<MessagesDisplay />
+					</div>
+
+					<Grid className={classes.textInput}>
+						<TextInput
+							onChange={handleChange}
+							value={message}
+							multiline={true}
+							placeholder="Type something..."
+							rows={4}
+							handleKeyPress={handleKeyPress}
+						/>
+					</Grid>
+				</div>
+			) : (
+				<div style={{ height: "30%" }}>
+					<NoConversation
+						message="No Chat selected. Select one from the list of Chats or use the search bar to search for other users."
+						imageLink="notification.svg"
+					/>
+				</div>
+			)
+		) : (
+			""
+		)
+	) : conversationId ? (
 		<div className={classes.root}>
 			<div className={classes.userInfo}>
-				<UserInfo username={username} onlineStatus={checkOnlineStatus(id)} />
+				<UserInfo
+					username={username}
+					onlineStatus={checkOnlineStatus(id)}
+				/>
 			</div>
 
 			<div className={classes.messageDisplay}>
