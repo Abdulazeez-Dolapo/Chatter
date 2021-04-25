@@ -12,7 +12,7 @@ const profileDisplay = theme => ({
 	},
 	textContainer: {
 		marginLeft: "1.5rem",
-		width: "100%",
+		width: "80%",
 	},
 	name: {
 		textTransform: "lowercase",
@@ -21,10 +21,6 @@ const profileDisplay = theme => ({
 	message: {
 		color: theme.palette.secondary.main,
 		fontSize: "0.8rem",
-		textOverflow: "ellipsis",
-		width: "350px",
-		whiteSpace: "nowrap",
-		overflow: "hidden",
 	},
 	badgeContainer: {
 		display: "flex",

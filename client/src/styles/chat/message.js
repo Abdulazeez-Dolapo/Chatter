@@ -20,6 +20,10 @@ const message = theme => ({
 		alignItems: "center",
 		borderRadius: "10px 10px 0 10px",
 		padding: "1rem",
+		wordBreak: "break-all",
+		[theme.breakpoints.only("xs")]: {
+			padding: "0.3rem 1rem",
+		},
 	},
 	receiverMessageContainer: {
 		maxWidth: "100%",
@@ -30,6 +34,10 @@ const message = theme => ({
 		alignItems: "center",
 		borderRadius: "0 10px 10px 10px",
 		padding: "1rem",
+		wordBreak: "break-all",
+		[theme.breakpoints.only("xs")]: {
+			padding: "0.3rem 1rem",
+		},
 	},
 	text: { fontSize: "1.1rem" },
 })

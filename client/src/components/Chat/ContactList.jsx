@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import IconButton from "@material-ui/core/IconButton"
 import ClearIcon from "@material-ui/icons/Clear"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles, useTheme } from "@material-ui/core/styles"
 
 import contactListStyles from "../../styles/chat/contactList"
 
@@ -24,10 +24,12 @@ import AuthContext from "../../context/AuthContext"
 
 const useStyles = makeStyles(contactListStyles)
 
-const ContactList = () => {
+const ContactList = props => {
 	const classes = useStyles()
 	const history = useHistory()
 	const { open, handleClose, message, setMessage, setOpen } = useNotification()
+
+	const { showChatArea, isMobile } = props
 
 	const {
 		setSelectedUser,
@@ -72,7 +74,9 @@ const ContactList = () => {
 			...messages,
 			[newMessage?.conversationId]: allConversationMessages,
 		})
-		moveCurrentConversationToTop()
+
+		const index = getIndexOfConversation(newMessage?.conversationId)
+		moveCurrentConversationToTop(index)
 	}, [newMessage])
 
 	useEffect(() => {
@@ -82,6 +86,7 @@ const ContactList = () => {
 				const { conversations } = await fetchUserChatList()
 
 				setChatList(conversations)
+
 				setSearchedChatList(conversations)
 				setChatListLoading(false)
 			} catch (error) {
@@ -101,13 +106,24 @@ const ContactList = () => {
 		})
 	}, [])
 
-	const moveCurrentConversationToTop = () => {
+	const getIndexOfConversation = conversationId => {
+		return searchedChatList?.findIndex(
+			list => list?.conversationId === conversationId
+		)
+	}
+
+	const moveCurrentConversationToTop = index => {
+		if (index < 0) return
 		if (typeof currentConversationIndex !== "number") return
 
 		const conversations = [...chatList]
-		const conversation = conversations.splice(currentConversationIndex, 1)[0]
+		const conversation = conversations.splice(
+			index ?? currentConversationIndex,
+			1
+		)[0]
 		setSearchedChatList([conversation, ...conversations])
 		setChatList([conversation, ...conversations])
+		setCurrentConversationIndex(0)
 	}
 
 	const handleChange = e => {
@@ -181,7 +197,7 @@ const ContactList = () => {
 			user: { username, id },
 		} = conversation
 
-		history.push(`/chat?cid=${conversationId}`)
+		history.push(`/chat?cId=${conversationId}`)
 		socket.emit("join conversation", conversationId)
 		setSelectedUser({ username, id, conversationId })
 
@@ -232,7 +248,90 @@ const ContactList = () => {
 		setStartNewConversation(false)
 	}
 
-	return (
+	return isMobile ? (
+		!showChatArea ? (
+			<div className={classes.root}>
+				<div className={classes.chatHeader}>
+					<Typography variant="h3" className={classes.heading}>
+						Chats
+					</Typography>
+
+					{startNewConversation && (
+						<IconButton aria-label="clear search" onClick={clearSearch}>
+							<ClearIcon color="error" />
+						</IconButton>
+					)}
+				</div>
+
+				<TextInput
+					onChange={handleChange}
+					classes={classes}
+					value={searchValue}
+					placeholder="Search"
+					icon
+					handleKeyPress={handleKeyPress}
+				/>
+
+				<Grid className={classes.usersList}>
+					{chatListLoading ? (
+						<div className={classes.loader}>
+							<CircularProgress />
+						</div>
+					) : startNewConversation ? (
+						searchedUsers?.length > 0 ? (
+							searchedUsers.map(user => (
+								<div
+									key={user.id}
+									className={classes.contactList}
+									onClick={() => startConversation(user)}
+								>
+									<ProfileDisplay
+										name={user?.username}
+										onlineStatus={checkOnlineStatus(user?.id)}
+									/>
+								</div>
+							))
+						) : (
+							<Typography>No Users found</Typography>
+						)
+					) : searchedChatList?.length > 0 ? (
+						searchedChatList.map((list, index) => (
+							<div
+								key={list.id}
+								className={classes.contactList}
+								onClick={() => selectChat(list, index)}
+							>
+								<ProfileDisplay
+									name={list?.user?.username}
+									message={getLatestMessage(
+										list?.conversation?.lastMessage,
+										list?.conversation?.id
+									)}
+									onlineStatus={checkOnlineStatus(list?.user?.id)}
+									unread={getNumberOfUnreadMessages(
+										list?.conversation?.id
+									)}
+								/>
+							</div>
+						))
+					) : (
+						<Typography>
+							No contacts found. Press enter to search for new users from
+							the database.
+						</Typography>
+					)}
+				</Grid>
+
+				<Notification
+					open={open}
+					message={message}
+					handleClose={handleClose}
+				/>
+			</div>
+		) : (
+			""
+		)
+	) : (
 		<div className={classes.root}>
 			<div className={classes.chatHeader}>
 				<Typography variant="h3" className={classes.heading}>
@@ -299,8 +398,8 @@ const ContactList = () => {
 					))
 				) : (
 					<Typography>
-						No contacts found. Press enter on the search bar to search for
-						new users from the database.
+						No contacts found. Press enter to search for new users from
+						the database.
 					</Typography>
 				)}
 			</Grid>

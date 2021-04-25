@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			conversationId: DataTypes.INTEGER,
 			senderId: DataTypes.INTEGER,
-			content: DataTypes.STRING,
+			content: DataTypes.TEXT,
 		},
 		{
 			sequelize,

@@ -45,7 +45,9 @@ const ProfileDisplay = props => {
 				{name && <Typography className={classes.name}>{name}</Typography>}
 				{message && (
 					<div className={classes.badgeContainer}>
-						<Typography className={classes.message}>{message}</Typography>
+						<Typography className={classes.message} noWrap>
+							{message}
+						</Typography>
 
 						{unread > 0 && (
 							<Badge

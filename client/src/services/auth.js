@@ -11,3 +11,5 @@ export const loginUser = async formData => {
 export const signupUser = async formData => {
 	return await axiosInstance.post("/auth/register", formData)
 }
+
+export const logout = () => {}
