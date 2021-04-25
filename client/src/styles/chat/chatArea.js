@@ -1,7 +1,16 @@
 const chatArea = theme => ({
-	root: {},
+	root: {
+		height: "100%",
+	},
+	userInfo: {
+		height: "9vh",
+		width: "96%",
+	},
+	messageDisplay: {
+		height: "66vh",
+	},
 	textInput: {
-		padding: "0 0 0 2rem",
+		paddingLeft: "1rem",
 	},
 })
 

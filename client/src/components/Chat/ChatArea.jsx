@@ -44,9 +44,13 @@ const ChatArea = () => {
 
 	return conversationId ? (
 		<div className={classes.root}>
-			<UserInfo username={username} onlineStatus={checkOnlineStatus(id)} />
+			<div className={classes.userInfo}>
+				<UserInfo username={username} onlineStatus={checkOnlineStatus(id)} />
+			</div>
 
-			<MessagesDisplay />
+			<div className={classes.messageDisplay}>
+				<MessagesDisplay />
+			</div>
 
 			<Grid className={classes.textInput}>
 				<TextInput

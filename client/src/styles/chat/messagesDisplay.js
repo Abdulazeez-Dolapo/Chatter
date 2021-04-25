@@ -1,9 +1,8 @@
 const messagesDisplay = theme => ({
 	root: {
-		height: "63vh",
+		height: "90%",
 		overflowY: "auto",
-		padding: "2rem",
-		paddingRight: "1rem",
+		padding: "2rem 1rem",
 	},
 	senderRow: {
 		width: "100%",

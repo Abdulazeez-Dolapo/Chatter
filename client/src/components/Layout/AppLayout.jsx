@@ -1,21 +1,22 @@
 import Grid from "@material-ui/core/Grid"
-// import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles } from "@material-ui/core/styles"
 
 import Header from './Header/Header'
 
-// import authLayoutStyles from "../../styles/authLayout"
+import appLayoutStyles from "../../styles/layout/appLayout"
 
-// const useStyles = makeStyles(authLayoutStyles)
+const useStyles = makeStyles(appLayoutStyles)
 
 const AppLayout = props => {
-	// const classes = useStyles()
+	const classes = useStyles()
 
 	return (
-		// <Grid component="main" container className={classes.root}>
-		<Grid component="main" container >
-			<Header />
+		<Grid component="main" container className={classes.root}>
+			<Grid item xs={12} className={classes.header}>
+				<Header />
+			</Grid>
 
-			<Grid item xs={12}>
+			<Grid item xs={12} className={classes.page}>
 				{props.children}
 			</Grid>
 		</Grid>

@@ -1,11 +1,13 @@
 const appLayoutStyles = (theme) => ({
    root: {
-     flexGrow: 1,
+    height: "100vh"
    },
-   menuButton: {
-     marginRight: theme.spacing(2),
-   },
-  
+  header: {
+    height: "7vh"
+  },
+  page: {
+    height: "93vh"
+  }
  })
 
  export default appLayoutStyles

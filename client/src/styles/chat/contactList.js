@@ -1,6 +1,7 @@
 const contactList = theme => ({
 	root: {
 		width: "100%",
+		height: "79vh",
 	},
 	input: {
 		borderRadius: "5px",
@@ -25,6 +26,7 @@ const contactList = theme => ({
 	},
 	contactList: {
 		padding: "1rem",
+		paddingLeft: 0,
 		"&:hover": {
 			cursor: "pointer",
 		},
@@ -36,7 +38,7 @@ const contactList = theme => ({
 		fontSize: "1.7rem",
 	},
 	usersList: {
-		height: "74vh",
+		height: "86%",
 		overflowY: "auto",
 	},
 })

@@ -61,9 +61,9 @@ const Chat = () => {
 		<AppLayout>
 			<Grid container className={classes.root}>
 				<Grid item xs={12} sm={4}>
-					<Grid className={classes.profile}>
+					<div className={classes.profile}>
 						<ProfileDisplay name={user?.username} onlineStatus={true} />
-					</Grid>
+					</div>
 
 					<ContactList />
 				</Grid>

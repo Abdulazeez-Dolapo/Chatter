@@ -1,7 +1,7 @@
 const chatPage = theme => ({
 	root: {
-		height: "100vh",
-		width: "99vw",
+		height: "100%",
+		width: "100%",
 		padding: "2rem",
 		margin: 0,
 	},
