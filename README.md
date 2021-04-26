@@ -2,6 +2,10 @@
 
 This starter repo will be used for building applications using React, Material-UI, React-Router, Node, & Express.js.
 
+## Introduction
+
+This is a real time chat app built using React, Material UI, Socket.io, Node.js, Express and Postgres.
+
 ## Getting started
 
 The project is broken down into a client and server folder.
