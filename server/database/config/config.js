@@ -18,5 +18,6 @@ module.exports = {
 		database: DB_NAME,
 		host: DB_HOST,
 		dialect: "postgres",
+		use_env_variable: "DATABASE_URL",
 	},
 }
