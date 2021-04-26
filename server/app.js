@@ -1,5 +1,6 @@
 const createError = require("http-errors")
 const express = require("express")
+const cors = require("cors")
 const { join } = require("path")
 const cookieParser = require("cookie-parser")
 const logger = require("morgan")
@@ -15,6 +16,13 @@ app.use(json())
 app.use(urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(join(__dirname, "public")))
+
+const corsOptions = {
+	origin: process.env.FRONTEND_URL,
+	optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions))
 
 app.use("/api", appRoutes)
 
