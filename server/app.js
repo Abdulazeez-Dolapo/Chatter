@@ -16,6 +16,7 @@ app.use(json())
 app.use(urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(join(__dirname, "public")))
+app.enable("trust proxy")
 
 const corsOptions = {
 	origin: process.env.FRONTEND_URL,
