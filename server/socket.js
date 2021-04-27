@@ -5,8 +5,8 @@ const socketConnection = server => {
 	const io = require("socket.io")(server, {
 		cors: {
 			origin: process.env.FRONTEND_URL,
+			withCredentials: true,
 		},
-		withCredentials: true,
 	})
 
 	io.use((socket, next) => {
