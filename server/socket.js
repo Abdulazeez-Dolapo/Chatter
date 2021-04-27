@@ -6,6 +6,7 @@ const socketConnection = server => {
 		cors: {
 			origin: process.env.FRONTEND_URL,
 		},
+		withCredentials: true,
 	})
 
 	io.use((socket, next) => {
