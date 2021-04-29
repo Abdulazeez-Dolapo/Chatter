@@ -1,10 +1,8 @@
-# Express Starter
-
-This starter repo will be used for building applications using React, Material-UI, React-Router, Node, & Express.js.
+# Chatter
 
 ## Introduction
 
-This is a real time chat app built using React, Material UI, Socket.io, Node.js, Express and Postgres.
+This is a real time chat app built using React, Material UI, Socket io, Node.js, Express and Postgres. Authentication is handled using cookies in which the JWT is stored. The frontend was hosted on Netlify [https://chatter-client-app.netlify.app/](https://) and the backend was hosted on Heroku.
 
 ## Getting started
 
