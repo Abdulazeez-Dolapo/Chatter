@@ -8,12 +8,7 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage })
 const uploadRouter = express.Router()
 
-uploadRouter.post(
-	"/upload-files",
-	authenticate,
-	upload.array("file", 4),
-	uploadFiles
-)
+uploadRouter.post("/upload-files", upload.array("files", 4), uploadFiles)
 
 uploadRouter.delete("/delete-file/:name", authenticate, deleteFile)
 
