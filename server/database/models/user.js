@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 			username: { type: DataTypes.STRING, allowNull: false },
 			email: { type: DataTypes.STRING, allowNull: false, unique: true },
 			password: { type: DataTypes.STRING, allowNull: false },
+			imageUrl: { type: DataTypes.STRING, allowNull: false },
 		},
 		{
 			sequelize,
@@ -41,5 +42,6 @@ module.exports = (sequelize, DataTypes) => {
 		const hashedPassword = hashPassword(user.password)
 		user.password = hashedPassword
 	})
+
 	return User
 }
