@@ -15,13 +15,7 @@ const useStyles = makeStyles(ProfileDisplayStyles)
 
 const ProfileDisplay = props => {
 	const classes = useStyles()
-	const {
-		imageUrl = "https://picsum.photos/id/237/200/300",
-		name,
-		onlineStatus,
-		message,
-		unread,
-	} = props
+	const { imageUrl, name, onlineStatus, message, unread } = props
 
 	return (
 		<div className={classes.root}>

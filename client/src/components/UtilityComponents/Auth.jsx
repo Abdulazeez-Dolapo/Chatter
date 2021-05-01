@@ -7,6 +7,7 @@ import Form from "../UtilityComponents/Form"
 import { useNotification } from "../../hooks/notification"
 import authPageStyles from "../../styles/authPage"
 import AuthContext from "../../context/AuthContext"
+import { MAX_IMAGE_SIZE_ALLOWED } from "../../utils/constants"
 
 import Button from "@material-ui/core/Button"
 import Box from "@material-ui/core/Box"
@@ -19,17 +20,49 @@ const useStyles = makeStyles(authPageStyles)
 export default function Auth(props) {
 	const { open, handleClose, message, setMessage, setOpen } = useNotification()
 	const classes = useStyles()
-	const [loading, setLoading] = useState(false)
 	const history = useHistory()
+
+	const [loading, setLoading] = useState(false)
+	const [profilePicture, setProfilePicture] = useState(null)
 
 	const { setUser, setIsLoggedIn } = useContext(AuthContext)
 
-	const { onFormSubmit, initialValues, type, routeTo } = props
+	const { onFormSubmit, initialValues, type, routeTo, uploadImage } = props
+
+	const validateImageSize = imageSize => {
+		return MAX_IMAGE_SIZE_ALLOWED >= imageSize
+	}
+
+	const handleImageUpload = async image => {
+		return await uploadImage(image)
+	}
 
 	const onSubmit = async formData => {
 		try {
 			setLoading(true)
-			const res = await onFormSubmit(formData)
+			let imageUrl = "https://picsum.photos/id/237/200/300"
+
+			if (profilePicture) {
+				if (!validateImageSize(profilePicture[0].size)) {
+					const errMessage = "Image should not be more than 100kb"
+					setMessage(errMessage)
+					setOpen(true)
+					return
+				}
+
+				const newFormData = new FormData()
+				for (let index = 0; index < profilePicture.length; index++) {
+					newFormData.append("files", profilePicture[index])
+				}
+
+				const { files } = await handleImageUpload(newFormData)
+				imageUrl = files[0].Location
+			}
+
+			const userData =
+				type === "signup" ? { ...formData, imageUrl } : formData
+			console.log({ userData })
+			const res = await onFormSubmit(userData)
 
 			setUser(res.user)
 			setIsLoggedIn(true)
@@ -80,6 +113,7 @@ export default function Auth(props) {
 						onSubmit={onSubmit}
 						classes={classes}
 						initialValues={initialValues}
+						setProfilePicture={setProfilePicture}
 					/>
 				</Box>
 			</Box>

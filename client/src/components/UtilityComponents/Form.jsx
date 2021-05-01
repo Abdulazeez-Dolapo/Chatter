@@ -9,7 +9,18 @@ import Box from "@material-ui/core/Box"
 import CircularProgress from "@material-ui/core/CircularProgress"
 
 const Form = props => {
-	const { onSubmit, classes, type, initialValues, loading } = props
+	const {
+		onSubmit,
+		classes,
+		type,
+		initialValues,
+		loading,
+		setProfilePicture,
+	} = props
+
+	const handleImageChange = e => {
+		setProfilePicture(e.target.files)
+	}
 
 	return (
 		<Formik
@@ -42,6 +53,16 @@ const Form = props => {
 							error={touched.username && Boolean(errors.username)}
 							value={values.username}
 							onChange={handleChange}
+						/>
+					)}
+
+					{type === "signup" && (
+						<input
+							className={classes.searchInput2}
+							accept="image/*"
+							type="file"
+							name="profilePicture"
+							onChange={handleImageChange}
 						/>
 					)}
 
