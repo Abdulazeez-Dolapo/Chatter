@@ -49,6 +49,7 @@ const registerUser = async (req, res, next) => {
 			user: {
 				username: newUser.username,
 				id: newUser.id,
+				imageUrl: newUser.imageUrl,
 			},
 		})
 	} catch (error) {

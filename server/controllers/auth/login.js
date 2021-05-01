@@ -47,6 +47,7 @@ const loginUser = async (req, res, next) => {
 			user: {
 				username: user.username,
 				id: user.id,
+				imageUrl: user.imageUrl,
 			},
 		})
 	} catch (error) {
