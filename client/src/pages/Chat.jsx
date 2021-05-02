@@ -83,6 +83,7 @@ const Chat = () => {
 							<div className={classes.profile}>
 								<ProfileDisplay
 									name={user?.username}
+									imageUrl={user?.imageUrl}
 									onlineStatus={true}
 								/>
 							</div>
@@ -91,6 +92,7 @@ const Chat = () => {
 						<div className={classes.profile}>
 							<ProfileDisplay
 								name={user?.username}
+								imageUrl={user?.imageUrl}
 								onlineStatus={true}
 							/>
 						</div>

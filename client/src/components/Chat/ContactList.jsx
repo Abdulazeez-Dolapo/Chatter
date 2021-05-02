@@ -287,6 +287,7 @@ const ContactList = props => {
 								>
 									<ProfileDisplay
 										name={user?.username}
+										imageUrl={user?.imageUrl}
 										onlineStatus={checkOnlineStatus(user?.id)}
 									/>
 								</div>
@@ -307,6 +308,7 @@ const ContactList = props => {
 										list?.conversation?.lastMessage,
 										list?.conversation?.id
 									)}
+									imageUrl={list?.user?.imageUrl}
 									onlineStatus={checkOnlineStatus(list?.user?.id)}
 									unread={getNumberOfUnreadMessages(
 										list?.conversation?.id
@@ -370,6 +372,7 @@ const ContactList = props => {
 								<ProfileDisplay
 									name={user?.username}
 									onlineStatus={checkOnlineStatus(user?.id)}
+									imageUrl={user?.imageUrl}
 								/>
 							</div>
 						))
@@ -393,6 +396,7 @@ const ContactList = props => {
 								unread={getNumberOfUnreadMessages(
 									list?.conversation?.id
 								)}
+								imageUrl={list?.user?.imageUrl}
 							/>
 						</div>
 					))
