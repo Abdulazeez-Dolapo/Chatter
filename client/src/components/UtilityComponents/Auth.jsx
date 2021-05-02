@@ -47,6 +47,7 @@ export default function Auth(props) {
 					const errMessage = "Image should not be more than 100kb"
 					setMessage(errMessage)
 					setOpen(true)
+					setLoading(false)
 					return
 				}
 
