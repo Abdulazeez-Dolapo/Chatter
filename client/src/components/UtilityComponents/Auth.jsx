@@ -61,7 +61,6 @@ export default function Auth(props) {
 
 			const userData =
 				type === "signup" ? { ...formData, imageUrl } : formData
-			console.log({ userData })
 			const res = await onFormSubmit(userData)
 
 			setUser(res.user)

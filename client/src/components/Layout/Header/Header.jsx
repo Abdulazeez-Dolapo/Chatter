@@ -36,12 +36,8 @@ const Header = () => {
 	}
 
 	const userLogout = async () => {
-		try {
-			await logout
-			setIsLoggedIn(false)
-		} catch (error) {
-			console.log(error)
-		}
+		await logout()
+		setIsLoggedIn(false)		
 	}
 
 	useEffect(() => {
