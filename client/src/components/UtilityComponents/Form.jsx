@@ -57,13 +57,19 @@ const Form = props => {
 					)}
 
 					{type === "signup" && (
-						<input
-							className={classes.searchInput2}
-							accept="image/*"
-							type="file"
-							name="profilePicture"
-							onChange={handleImageChange}
-						/>
+						<>
+							<Typography className={classes.otherLabel}>
+								Profile Image
+							</Typography>
+
+							<input
+								className={classes.fileInput}
+								accept="image/*"
+								type="file"
+								name="profilePicture"
+								onChange={handleImageChange}
+							/>
+						</>
 					)}
 
 					<TextField

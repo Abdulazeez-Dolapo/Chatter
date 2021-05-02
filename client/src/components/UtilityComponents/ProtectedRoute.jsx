@@ -14,8 +14,8 @@ const useStyles = makeStyles(protectedRouteStyles)
 const ProtectedRoute = ({ children, path, authPage }) => {
 	const classes = useStyles()
 	const { isLoggedIn, loading } = useContext(AuthContext)
-
-	const displayUI = () => {
+	
+	const displayUI = authPage => {
 		if (authPage) {
 			return isLoggedIn ? (
 				<Redirect to="/chat" />
@@ -36,7 +36,7 @@ const ProtectedRoute = ({ children, path, authPage }) => {
 			<CircularProgress size={100} color="primary" />
 		</Grid>
 	) : (
-		displayUI()
+		displayUI(authPage)
 	)
 }
 
